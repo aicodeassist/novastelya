@@ -127,7 +127,8 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
   const isHeaderScrolled = scrolled || mobileMenuOpen;
 
   return (
-    <header className={`${styles.header} ${isHeaderScrolled ? styles.scrolled : ""}`}>
+    <>
+      <header className={`${styles.header} ${isHeaderScrolled ? styles.scrolled : ""}`}>
       <div className={styles.container}>
         {/* Logo */}
         <Link href={localizedUrl("/")} className={styles.logo} aria-label="NOVA STELYA — головна">
@@ -499,6 +500,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
           </ul>
         </div>
       )}
+    </header>
 
       {/* Mobile Bottom Navigation Bar */}
       <nav className={styles.mobileNav} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
@@ -563,6 +565,6 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
         locale={locale}
         currentCity={currentCity}
       />
-    </header>
+    </>
   );
 }
