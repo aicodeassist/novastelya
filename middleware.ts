@@ -6,6 +6,7 @@ const intlMiddleware = createMiddleware({
   locales,
   defaultLocale,
   localePrefix: "as-needed", // uk = /, ru = /ru
+  localeDetection: false,
 });
 
 const AI_BOTS = [
