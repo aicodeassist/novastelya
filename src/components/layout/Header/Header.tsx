@@ -503,7 +503,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
       )}
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className={styles.mobileNav} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
+      <nav className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavHidden : ""}`} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
         <Link href={localizedUrl("/")} className={`${styles.mobileNavItem} ${pathname === localizedUrl("/") ? styles.active : ""}`} onClick={() => setMobileMenuOpen(false)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
