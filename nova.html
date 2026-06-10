@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>NOVA STELYA | Архітектура Простору</title>
+    <meta name="description" content="NOVA STELYA — преміальні натяжні стелі нового покоління у Дніпрі. Тіньові профілі, світлові лінії та бездоганна геометрія.">
+    
+    <!-- Fonts: Syne (Artistic) + Inter (UI) -->
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource-variable/inter@5.0.16/index.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fontsource/syne@5.0.18/index.min.css" rel="stylesheet">
+
+    <style>
+        /* 
+         * NOVA STELYA APP-LIKE EXPERIENCE v8.0
+         * Fixed Swipe Logic & Shimmer Effect
+         */
+
+        :root {
+            --c-bg: #F9F9F9;
+            --c-surface: #FFFFFF;
+            --c-text-main: #121212;
+            --c-text-muted: #666666;
+            --c-accent: #BFA05D;
+            --c-border: rgba(0, 0, 0, 0.08);
+            
+            --sp-xs: 0.5rem; --sp-sm: 1rem; --sp-md: 2rem; --sp-lg: 4rem; --sp-xl: 8rem;
+            --container: min(100% - 2rem, 1400px);
+
+            --ff-display: 'Syne', sans-serif;
+            --ff-body: 'Inter Variable', sans-serif;
+            --fs-hero: clamp(3rem, 7vw, 6rem);
+            --fs-h1: clamp(2.5rem, 5vw, 4rem);
+            --fs-h2: clamp(2rem, 4vw, 3rem);
+            
+            --radius: 24px;
+            --ease: cubic-bezier(0.32, 0.72, 0, 1);
+            --shadow-float: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--ff-body);
+            background-color: var(--c-bg);
+            color: var(--c-text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 100px;
+        }
+        @media (min-width: 1024px) { body { padding-bottom: 0; } }
+
+        ::selection { background: var(--c-accent); color: white; }
+        img { max-width: 100%; display: block; object-fit: cover; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+        ul { list-style: none; }
+
+        .container { width: var(--container); margin-inline: auto; }
+        .section-pad { padding-block: var(--sp-xl); }
+        
+        /* --- HEADER & ANIMATED BURGER --- */
+        .site-header {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            padding: 1.5rem 0; transition: all 0.4s var(--ease);
+        }
+        .site-header.scrolled {
+            background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
+            padding: 1rem 0; border-bottom: 1px solid var(--c-border);
+        }
+        .header-inner { display: flex; justify-content: space-between; align-items: center; }
+        
+        .logo { 
+            font-family: var(--ff-display); font-weight: 800; font-size: 1.75rem; 
+            letter-spacing: 0.08em; color: white; transition: color 0.3s;
+        }
+        .site-header.scrolled .logo { color: var(--c-text-main); }
+        .logo span { color: var(--c-accent); }
+
+        /* Animated Wavy Burger SVG */
+        .burger-btn {
+            width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; z-index: 101; position: relative;
+        }
+        .burger-svg { width: 32px; height: 32px; overflow: visible; }
+        .burger-line {
+            fill: none; stroke: white; stroke-width: 2.5; stroke-linecap: round;
+            transition: all 0.5s var(--ease);
+        }
+        .site-header.scrolled .burger-line { stroke: var(--c-text-main); }
+        
+        @keyframes waveFlow {
+            0% { d: path("M4 8 Q12 8 20 8"); }
+            50% { d: path("M4 8 Q12 12 20 8"); }
+            100% { d: path("M4 8 Q12 8 20 8"); }
+        }
+        @keyframes waveFlow2 {
+            0% { d: path("M4 16 Q12 16 20 16"); }
+            50% { d: path("M4 16 Q12 12 20 16"); }
+            100% { d: path("M4 16 Q12 16 20 16"); }
+        }
+        
+        .burger-line-1 { animation: waveFlow 3s ease-in-out infinite; }
+        .burger-line-2 { animation: waveFlow2 3s ease-in-out infinite 0.2s; }
+        .burger-line-3 { animation: waveFlow 3s ease-in-out infinite 0.4s; }
+
+        .burger-btn.active .burger-line-1 { d: path("M6 6 L18 18"); animation: none; stroke: var(--c-text-main); }
+        .burger-btn.active .burger-line-2 { opacity: 0; }
+        .burger-btn.active .burger-line-3 { d: path("M6 18 L18 6"); animation: none; stroke: var(--c-text-main); }
+
+        /* Fullscreen Menu Overlay */
+        .menu-overlay {
+            position: fixed; inset: 0; background: white; z-index: 99;
+            padding: 8rem 2rem 2rem; transform: translateY(-100%); transition: 0.6s var(--ease);
+            display: flex; flex-direction: column; gap: 2rem;
+        }
+        .menu-overlay.open { transform: translateY(0); }
+        .menu-link { font-family: var(--ff-display); font-size: 2.5rem; color: var(--c-text-main); opacity: 0; transform: translateX(-20px); transition: 0.4s; }
+        .menu-overlay.open .menu-link { opacity: 1; transform: translateX(0); }
+        .menu-overlay.open .menu-link:nth-child(1) { transition-delay: 0.1s; }
+        .menu-overlay.open .menu-link:nth-child(2) { transition-delay: 0.15s; }
+        .menu-overlay.open .menu-link:nth-child(3) { transition-delay: 0.2s; }
+        .menu-overlay.open .menu-link:nth-child(4) { transition-delay: 0.25s; }
+
+        /* --- HERO --- */
+        .hero {
+            min-height: 100vh; display: flex; align-items: center;
+            position: relative; overflow: hidden; padding-top: 80px; background: #050505;
+        }
+        .hero-bg { position: absolute; inset: 0; z-index: 1; opacity: 0.6; }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; }
+        .hero-overlay { 
+            position: absolute; inset: 0; z-index: 2;
+            background: radial-gradient(circle at 30% 50%, rgba(0,0,0,0.3) 0%, rgba(5,5,5,0.8) 80%),
+                        linear-gradient(to bottom, transparent 70%, var(--c-bg) 100%);
+        }
+        .hero-content { position: relative; z-index: 3; max-width: 800px; color: white; }
+        .hero-tag {
+            display: inline-block; padding: 0.5rem 1rem; border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 100px; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.1em;
+            margin-bottom: 2rem; color: var(--c-accent); backdrop-filter: blur(10px);
+        }
+        .hero h1 { font-family: var(--ff-display); font-size: var(--fs-hero); line-height: 0.95; margin-bottom: 2rem; letter-spacing: -0.03em; }
+        .hero p { font-size: 1.25rem; opacity: 0.8; margin-bottom: 3rem; max-width: 600px; }
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 1rem 2.5rem; background: white; color: black;
+            font-weight: 600; border-radius: 100px; transition: all 0.4s var(--ease);
+        }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,255,255,0.2); }
+
+        /* --- CONFIGURATOR --- */
+        .config-section { background: var(--c-bg); position: relative; margin-top: -100px; z-index: 10; }
+        .config-layout {
+            display: grid; grid-template-columns: 1fr; gap: 2rem;
+            background: var(--c-surface); border-radius: var(--radius);
+            box-shadow: var(--shadow-float); padding: 2rem; border: 1px solid var(--c-border);
+        }
+        @media (min-width: 1024px) { .config-layout { grid-template-columns: 400px 1fr; padding: 3rem; min-height: 700px; } }
+
+        .control-group { margin-bottom: 2.5rem; }
+        .control-group h3 { font-family: var(--ff-display); font-size: 1.4rem; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+        .step-num { width: 32px; height: 32px; background: var(--c-bg); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; font-weight: 700; }
+        
+        .range-wrapper { margin-bottom: 1.5rem; }
+        .range-labels { display: flex; justify-content: space-between; margin-bottom: 0.8rem; font-size: 0.9rem; color: var(--c-text-muted); font-weight: 500; }
+        .range-value { color: var(--c-text-main); font-weight: 700; }
+        input[type=range] { width: 100%; height: 6px; background: #EEE; border-radius: 3px; appearance: none; outline: none; }
+        input[type=range]::-webkit-slider-thumb { appearance: none; width: 24px; height: 24px; background: var(--c-text-main); border-radius: 50%; cursor: pointer; box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+
+        .mat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        .mat-card { border: 1px solid var(--c-border); border-radius: 12px; padding: 1rem; cursor: pointer; transition: all 0.3s; background: var(--c-bg); }
+        .mat-card.active { border-color: var(--c-text-main); background: white; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+        .mat-preview { width: 100%; aspect-ratio: 1; background: #ddd; border-radius: 8px; margin-bottom: 0.8rem; }
+        
+        .viz-canvas { background: #F4F4F4; border-radius: 16px; min-height: 400px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; perspective: 1000px; }
+        .ceiling-render { width: 70%; height: 60%; background: #fff; transition: all 0.6s var(--ease); position: relative; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
+        .ceiling-render[data-type="matte"] { background: #f8f8f8; }
+        .ceiling-render[data-type="glossy"] { background: linear-gradient(180deg, #e0e0e0 0%, #fff 100%); }
+        .ceiling-render[data-type="shadow"] { margin: 20px; box-shadow: 0 0 0 15px #F4F4F4, 0 20px 50px rgba(0,0,0,0.15); }
+        
+        .price-float { margin-top: 2rem; padding: 2rem; background: var(--c-bg); border-radius: 16px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        @media (min-width: 1024px) { .price-float { position: absolute; bottom: 2rem; right: 2rem; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: var(--shadow-float); margin: 0; } }
+        .price-amount { font-family: var(--ff-display); font-size: 2.5rem; line-height: 1; color: var(--c-text-main); }
+
+        /* --- MOBILE BOTTOM NAV & CONTACT SHEET --- */
+        .mobile-nav {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(25px);
+            border-top: 1px solid var(--c-border);
+            padding: 0.8rem 1rem env(safe-area-inset-bottom);
+            display: flex; justify-content: space-between; align-items: center;
+            box-shadow: 0 -5px 30px rgba(0,0,0,0.05);
+        }
+        @media (min-width: 1024px) { .mobile-nav { display: none; } }
+
+        .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 0.65rem; font-weight: 600; color: var(--c-text-muted); flex: 1; }
+        .nav-item svg { width: 24px; height: 24px; stroke-width: 1.5; }
+        .nav-item.active { color: var(--c-text-main); }
+        .nav-item.active svg { stroke: var(--c-accent); }
+
+        /* SHIMMER CALL BUTTON (Non-pulsing, subtle sheen) */
+        .nav-call-trigger {
+            width: 60px; height: 60px; background: var(--c-text-main); border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            margin-top: -30px; box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+            border: 4px solid var(--c-bg); transition: transform 0.3s var(--ease);
+            position: relative; z-index: 1001; overflow: hidden;
+        }
+        /* The shimmer effect */
+        .nav-call-trigger::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg);
+            animation: shimmer 3s infinite ease-in-out;
+        }
+        @keyframes shimmer {
+            0%, 100% { left: -100%; opacity: 0; }
+            50% { left: 150%; opacity: 1; }
+        }
+        .nav-call-trigger svg { stroke: white; width: 28px; height: 28px; fill: none; position: relative; z-index: 2; }
+        .nav-call-trigger:active { transform: scale(0.9); }
+
+        /* Bottom Sheet (App Style) */
+        .sheet-backdrop {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.4); z-index: 1001;
+            opacity: 0; pointer-events: none; backdrop-filter: blur(2px);
+            /* Transition handled via JS for swipe responsiveness */
+        }
+        .sheet-backdrop.visible { pointer-events: all; }
+
+        .bottom-sheet {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 1002;
+            background: #FFFFFF; border-radius: 28px 28px 0 0;
+            padding: 0 1.5rem env(safe-area-inset-bottom);
+            transform: translateY(110%); 
+            box-shadow: 0 -10px 50px rgba(0,0,0,0.15);
+            max-height: 92vh;
+            display: flex; flex-direction: column;
+            will-change: transform; /* Performance optimization */
+        }
+        .bottom-sheet.open { transform: translateY(0); }
+
+        .sheet-handle-area {
+            width: 100%; padding: 1rem 0 1.5rem; cursor: grab; touch-action: none;
+            display: flex; justify-content: center; flex-shrink: 0;
+        }
+        .sheet-handle { width: 40px; height: 5px; background: #E0E0E0; border-radius: 10px; }
+        
+        .sheet-content {
+            overflow-y: auto; overscroll-behavior: contain; flex: 1;
+            padding-bottom: 2rem;
+        }
+
+        .sheet-title { font-family: var(--ff-display); font-size: 1.5rem; text-align: center; margin-bottom: 2rem; }
+
+        .contact-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 2.5rem; }
+        .contact-item { display: flex; flex-direction: column; align-items: center; gap: 0.5rem; }
+        .contact-icon {
+            width: 56px; height: 56px; border-radius: 18px; background: var(--c-bg);
+            display: flex; align-items: center; justify-content: center; transition: 0.3s;
+        }
+        .contact-icon svg { width: 28px; height: 28px; }
+        .contact-item span { font-size: 0.7rem; font-weight: 600; color: var(--c-text-muted); }
+        .contact-item:active .contact-icon { transform: scale(0.9); background: #eee; }
+
+        .phone-list { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2.5rem; }
+        .phone-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1.2rem; background: var(--c-bg); border-radius: 16px;
+            transition: background 0.2s;
+        }
+        .phone-row:active { background: #eee; }
+        .phone-number { font-weight: 700; font-size: 1.1rem; }
+        .phone-label { font-size: 0.8rem; color: var(--c-text-muted); }
+
+        .sheet-cta {
+            width: 100%; padding: 1.3rem; background: var(--c-text-main); color: white;
+            border-radius: 16px; font-weight: 700; font-size: 1rem; text-align: center;
+            margin-top: auto; flex-shrink: 0; margin-bottom: 1rem;
+        }
+        .sheet-cta:active { opacity: 0.9; }
+
+        /* Portfolio */
+        .portfolio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+        .port-item { position: relative; aspect-ratio: 4/3; border-radius: var(--radius); overflow: hidden; }
+        .port-item img { width: 100%; height: 100%; transition: transform 0.6s var(--ease); }
+        .port-item:hover img { transform: scale(1.05); }
+    </style>
+</head>
+<body>
+
+    <!-- Header with Animated Wavy Burger -->
+    <header class="site-header">
+        <div class="container header-inner">
+            <a href="/" class="logo">NOVA <span>STELYA</span></a>
+            <button class="burger-btn" id="burger-btn" aria-label="Меню">
+                <svg class="burger-svg" viewBox="0 0 24 24">
+                    <path class="burger-line burger-line-1" d="M4 8 Q12 8 20 8" />
+                    <path class="burger-line burger-line-2" d="M4 12 Q12 12 20 12" />
+                    <path class="burger-line burger-line-3" d="M4 16 Q12 16 20 16" />
+                </svg>
+            </button>
+        </div>
+    </header>
+
+    <!-- Fullscreen Menu -->
+    <div class="menu-overlay" id="menu-overlay">
+        <a href="#" class="menu-link">Головна</a>
+        <a href="#calculator" class="menu-link">Конфігуратор</a>
+        <a href="#portfolio" class="menu-link">Портфоліо</a>
+        <a href="#technologies" class="menu-link">Технології</a>
+        <a href="#contacts" class="menu-link">Контакти</a>
+    </div>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="hero-bg">
+                <img id="hero-img" src="" alt="Premium Interior" loading="eager">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="container hero-content">
+                <span class="hero-tag">Engineering & Aesthetics • Dnipro</span>
+                <h1>СТЕЛЯ ЯК <br>МИСТЕЦТВО</h1>
+                <p>Ми не просто монтуємо полотна. Ми створюємо архітектурний простір, де кожна лінія має значення.</p>
+                <a href="#calculator" class="btn-primary">Розрахувати проект</a>
+            </div>
+        </section>
+
+        <!-- Configurator -->
+        <section id="calculator" class="config-section section-pad">
+            <div class="container">
+                <div style="margin-bottom: 3rem;">
+                    <h2 style="font-family: var(--ff-display); font-size: var(--fs-h1); margin-bottom: 1rem;">Smart Конфігуратор</h2>
+                    <p style="color: var(--c-text-muted); max-width: 600px;">Точність розрахунку 99%. Ціна фіксується при замірі.</p>
+                </div>
+                <div class="config-layout">
+                    <div class="config-controls">
+                        <div class="control-group">
+                            <h3><span class="step-num">1</span> Геометрія</h3>
+                            <div class="range-wrapper">
+                                <div class="range-labels"><span>Площа</span><span class="range-value" id="area-val">25 м²</span></div>
+                                <input type="range" id="area-in" min="5" max="100" value="25">
+                            </div>
+                            <div class="range-wrapper">
+                                <div class="range-labels"><span>Периметр</span><span class="range-value" id="perim-val">20 м.п.</span></div>
+                                <input type="range" id="perim-in" min="8" max="50" value="20">
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <h3><span class="step-num">2</span> Матеріал</h3>
+                            <div class="mat-grid">
+                                <div class="mat-card active" data-type="matte" data-price="700">
+                                    <div class="mat-preview" style="background: #eee;"></div>
+                                    <div class="mat-name">Premium Matte</div>
+                                    <div class="mat-price">від 700 ₴/м²</div>
+                                </div>
+                                <div class="mat-card" data-type="glossy" data-price="750">
+                                    <div class="mat-preview" style="background: linear-gradient(45deg, #ddd, #fff);"></div>
+                                    <div class="mat-name">High Gloss</div>
+                                    <div class="mat-price">від 750 ₴/м²</div>
+                                </div>
+                                <div class="mat-card" data-type="shadow" data-price="1100">
+                                    <div class="mat-preview" style="background: #fff; box-shadow: inset 0 0 0 3px #ccc;"></div>
+                                    <div class="mat-name">Shadow Line</div>
+                                    <div class="mat-price">від 1100 ₴/м²</div>
+                                </div>
+                                <div class="mat-card" data-type="light-line" data-price="900">
+                                    <div class="mat-preview" style="background: #f4f4f4; position:relative;"><div style="position:absolute;top:50%;left:0;right:0;height:2px;background:#fff;box-shadow:0 0 5px #aaa;"></div></div>
+                                    <div class="mat-name">Light Lines</div>
+                                    <div class="mat-price">від 900 ₴/м²</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <h3><span class="step-num">3</span> Освітлення</h3>
+                            <div class="range-wrapper">
+                                <div class="range-labels"><span>Точкові світильники</span><span class="range-value" id="spots-val">6 шт</span></div>
+                                <input type="range" id="spots-in" min="0" max="30" value="6">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="config-viz">
+                        <div class="viz-canvas">
+                            <div id="ceiling-model" class="ceiling-render" data-type="matte"></div>
+                        </div>
+                        <div class="price-float">
+                            <div>
+                                <div style="font-size: 0.8rem; color: var(--c-text-muted); text-transform: uppercase; letter-spacing: 0.1em;">Кошторис</div>
+                                <div class="price-amount" id="total-price">24 500 ₴</div>
+                            </div>
+                            <button class="btn-primary" style="background: var(--c-text-main); color: white;" onclick="openSheet()">Зафіксувати</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Portfolio -->
+        <section id="portfolio" class="section-pad">
+            <div class="container">
+                <h2 style="font-family: var(--ff-display); font-size: var(--fs-h2);">Реалізовані проекти</h2>
+                <div class="portfolio-grid">
+                    <article class="port-item"><img src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=800&q=80" alt="Project 1" loading="lazy"></article>
+                    <article class="port-item"><img src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=800&q=80" alt="Project 2" loading="lazy"></article>
+                    <article class="port-item"><img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?auto=format&fit=crop&w=800&q=80" alt="Project 3" loading="lazy"></article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav">
+        <a href="#" class="nav-item active">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path></svg>
+            <span>Головна</span>
+        </a>
+        <a href="#calculator" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+            <span>Каталог</span>
+        </a>
+        
+        <!-- Center Call Button with Shimmer -->
+        <button class="nav-call-trigger" onclick="openSheet()" aria-label="Зв'язатися">
+            <svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+        </button>
+
+        <a href="#portfolio" class="nav-item">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+            <span>Портфоліо</span>
+        </a>
+        <button class="nav-item" onclick="toggleMenu()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            <span>Меню</span>
+        </button>
+    </nav>
+
+    <!-- App-Style Bottom Sheet -->
+    <div class="sheet-backdrop" id="sheet-backdrop"></div>
+    <div class="bottom-sheet" id="bottom-sheet">
+        <div class="sheet-handle-area" id="sheet-handle-area">
+            <div class="sheet-handle"></div>
+        </div>
+        
+        <div class="sheet-content" id="sheet-content">
+            <div class="sheet-title">Зв'язатися з нами</div>
+            
+            <!-- Social & Messengers Grid -->
+            <div class="contact-grid">
+                <a href="https://t.me/novastelya" class="contact-item">
+                    <div class="contact-icon" style="color: #229ED9;">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 11.944 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+                    </div>
+                    <span>Telegram</span>
+                </a>
+                <a href="viber://chat?number=+380000000000" class="contact-item">
+                    <div class="contact-icon" style="color: #7360F2;">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.398.002C5.253.002.199 4.953.199 11.047c0 2.588.912 5.023 2.453 6.963L1.5 23.998l6.15-1.08c1.86.99 3.98 1.55 6.23 1.55 6.14 0 11.19-4.95 11.19-11.04S17.54.002 11.398.002zm0 20.39c-2.03 0-3.93-.56-5.56-1.53l-.4-.24-3.65.64.64-3.53-.26-.42c-1.35-1.7-2.15-3.83-2.15-6.12 0-5.14 4.23-9.32 9.43-9.32 5.2 0 9.43 4.18 9.43 9.32s-4.23 9.2-9.48 9.2zm5.17-7.05c-.28-.14-1.65-.81-1.9-.9-.25-.1-.43-.14-.61.14-.18.28-.7.9-.86 1.08-.16.18-.32.2-.6.07-.28-.14-1.18-.44-2.25-1.4-.83-.74-1.39-1.65-1.55-1.93-.16-.28-.02-.43.12-.57.13-.13.28-.34.42-.51.14-.17.18-.29.28-.48.09-.19.05-.35-.02-.49-.07-.14-.61-1.47-.84-2.02-.22-.53-.45-.46-.61-.47h-.52c-.18 0-.47.07-.72.35-.25.28-.95.93-.95 2.27 0 1.34.97 2.63 1.11 2.81.14.18 1.91 2.92 4.63 4.09.65.28 1.15.45 1.55.57.65.21 1.25.18 1.72.11.53-.08 1.65-.67 1.88-1.32.23-.65.23-1.21.16-1.32-.07-.11-.25-.18-.53-.32z"/></svg>
+                    </div>
+                    <span>Viber</span>
+                </a>
+                <a href="https://wa.me/380000000000" class="contact-item">
+                    <div class="contact-icon" style="color: #25D366;">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+                    </div>
+                    <span>WhatsApp</span>
+                </a>
+                <a href="https://instagram.com/novastelya" class="contact-item">
+                    <div class="contact-icon" style="color: #E4405F;">
+                        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+                    </div>
+                    <span>Instagram</span>
+                </a>
+            </div>
+
+            <!-- Phone Numbers -->
+            <div class="phone-list">
+                <a href="tel:+380990000000" class="phone-row">
+                    <div>
+                        <div class="phone-number">+38 (099) 000-00-00</div>
+                        <div class="phone-label">Vodafone</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+                <a href="tel:+380670000000" class="phone-row">
+                    <div>
+                        <div class="phone-number">+38 (067) 000-00-00</div>
+                        <div class="phone-label">Kyivstar</div>
+                    </div>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ccc" stroke-width="2"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                </a>
+            </div>
+        </div>
+
+        <button class="sheet-cta" onclick="alert('Заявка відправлена!')">Замовити зворотний дзвінок</button>
+    </div>
+
+    <script>
+        // Hero Image Generation
+        document.addEventListener('DOMContentLoaded', async () => {
+            const heroImg = document.getElementById('hero-img');
+            try {
+                heroImg.src = "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700&auto=format&fit=crop";
+            } catch(e) {
+                heroImg.src = "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700";
+            }
+            initConfigurator();
+            
+            window.addEventListener('scroll', () => {
+                document.querySelector('.site-header').classList.toggle('scrolled', window.scrollY > 50);
+            });
+        });
+
+        // Burger Menu Logic
+        const burgerBtn = document.getElementById('burger-btn');
+        const menuOverlay = document.getElementById('menu-overlay');
+        
+        function toggleMenu() {
+            const isActive = burgerBtn.classList.toggle('active');
+            menuOverlay.classList.toggle('open', isActive);
+            document.body.style.overflow = isActive ? 'hidden' : '';
+        }
+        burgerBtn.addEventListener('click', toggleMenu);
+        menuOverlay.querySelectorAll('.menu-link').forEach(l => l.addEventListener('click', toggleMenu));
+
+        // FIXED Bottom Sheet Logic
+        const sheet = document.getElementById('bottom-sheet');
+        const backdrop = document.getElementById('sheet-backdrop');
+        const handleArea = document.getElementById('sheet-handle-area');
+        const sheetContent = document.getElementById('sheet-content');
+        
+        let startY = 0;
+        let currentY = 0;
+        let isDragging = false;
+        let isOpen = false;
+
+        function openSheet() {
+            isOpen = true;
+            sheet.classList.add('open');
+            backdrop.classList.add('visible');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset inline styles to let CSS class take over
+            sheet.style.transition = 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)';
+            sheet.style.transform = ''; 
+            backdrop.style.transition = 'opacity 0.4s';
+            backdrop.style.opacity = '1';
+        }
+
+        function closeSheet() {
+            isOpen = false;
+            sheet.classList.remove('open');
+            backdrop.classList.remove('visible');
+            document.body.style.overflow = '';
+            
+            // Ensure clean state
+            sheet.style.transition = 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)';
+            sheet.style.transform = '';
+            backdrop.style.transition = 'opacity 0.4s';
+            backdrop.style.opacity = '';
+        }
+
+        backdrop.addEventListener('click', closeSheet);
+
+        // Touch/Swipe handling
+        function onStart(e) {
+            if (!isOpen) return;
+            // Only allow drag if content is scrolled to top
+            if (sheetContent.scrollTop > 5) return;
+            
+            startY = e.touches ? e.touches[0].clientY : e.clientY;
+            isDragging = true;
+            
+            // Remove transition for instant follow
+            sheet.style.transition = 'none';
+            backdrop.style.transition = 'none';
+        }
+
+        function onMove(e) {
+            if (!isDragging) return;
+            
+            currentY = e.touches ? e.touches[0].clientY : e.clientY;
+            const diff = currentY - startY;
+            
+            // Only allow dragging downward
+            if (diff > 0) {
+                if(e.cancelable) e.preventDefault();
+                
+                sheet.style.transform = `translateY(${diff}px)`;
+                
+                // Fade backdrop proportionally
+                const maxDrag = window.innerHeight * 0.8;
+                const opacity = 1 - (diff / maxDrag);
+                backdrop.style.opacity = Math.max(0, opacity);
+            }
+        }
+
+        function onEnd() {
+            if (!isDragging) return;
+            isDragging = false;
+            
+            const diff = currentY - startY;
+            const threshold = window.innerHeight * 0.2; 
+            
+            // Restore transition for snap animation
+            sheet.style.transition = 'transform 0.5s cubic-bezier(0.32, 0.72, 0, 1)';
+            backdrop.style.transition = 'opacity 0.4s';
+            
+            if (diff > threshold) {
+                closeSheet();
+            } else {
+                // Snap back
+                sheet.style.transform = 'translateY(0)';
+                backdrop.style.opacity = '1';
+            }
+            
+            startY = 0;
+            currentY = 0;
+        }
+
+        // Attach events
+        [handleArea, sheetContent].forEach(el => {
+            el.addEventListener('touchstart', onStart, { passive: true });
+            el.addEventListener('touchmove', onMove, { passive: false });
+            el.addEventListener('touchend', onEnd);
+            el.addEventListener('mousedown', onStart);
+            el.addEventListener('mousemove', onMove);
+            el.addEventListener('mouseup', onEnd);
+            el.addEventListener('mouseleave', onEnd);
+        });
+
+        // Configurator Logic
+        function initConfigurator() {
+            const state = { area: 25, perimeter: 20, material: 'matte', basePrice: 700, spots: 6, spotCost: 450 };
+            const els = {
+                area: document.getElementById('area-in'), areaDisp: document.getElementById('area-val'),
+                perim: document.getElementById('perim-in'), perimDisp: document.getElementById('perim-val'),
+                spots: document.getElementById('spots-in'), spotsDisp: document.getElementById('spots-val'),
+                mats: document.querySelectorAll('.mat-card'),
+                model: document.getElementById('ceiling-model'),
+                total: document.getElementById('total-price')
+            };
+
+            function update() {
+                els.areaDisp.textContent = `${state.area} м²`;
+                els.perimDisp.textContent = `${state.perimeter} м.п.`;
+                els.spotsDisp.textContent = `${state.spots} шт`;
+                els.model.dataset.type = state.material;
+                
+                let materialCost = state.area * state.basePrice;
+                let profileCost = state.perimeter * (state.material === 'shadow' ? 450 : 150);
+                let lightCost = state.spots * state.spotCost;
+                let complexity = state.material === 'shadow' || state.material === 'light-line' ? 1.3 : 1.0;
+                const total = Math.round((materialCost + profileCost + lightCost) * complexity);
+                
+                animateValue(els.total, parseInt(els.total.textContent.replace(/\D/g,'')), total, 400);
+            }
+
+            els.area.addEventListener('input', e => { state.area = +e.target.value; update(); });
+            els.perim.addEventListener('input', e => { state.perimeter = +e.target.value; update(); });
+            els.spots.addEventListener('input', e => { state.spots = +e.target.value; update(); });
+            els.mats.forEach(card => {
+                card.addEventListener('click', () => {
+                    els.mats.forEach(c => c.classList.remove('active'));
+                    card.classList.add('active');
+                    state.material = card.dataset.type;
+                    state.basePrice = +card.dataset.price;
+                    update();
+                });
+            });
+
+            function animateValue(obj, start, end, duration) {
+                let startTimestamp = null;
+                const step = (timestamp) => {
+                    if (!startTimestamp) startTimestamp = timestamp;
+                    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                    obj.textContent = new Intl.NumberFormat('uk-UA').format(Math.floor(progress * (end - start) + start)) + ' ₴';
+                    if (progress < 1) window.requestAnimationFrame(step);
+                };
+                window.requestAnimationFrame(step);
+            }
+            update();
+        }
+    </script>
+</body>
+</html>
+

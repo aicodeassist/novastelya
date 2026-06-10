@@ -1,0 +1,98 @@
+@layer components {
+  .button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-family-sans);
+    font-weight: var(--font-weight-semibold);
+    border-radius: var(--radius-md);
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    user-select: none;
+    border: 1px solid transparent;
+    text-decoration: none;
+  }
+
+  .button--sm {
+    padding: var(--space-2xs) var(--space-md);
+    font-size: var(--text-xs);
+    height: 32px;
+  }
+
+  .button--md {
+    padding: var(--space-xs) var(--space-lg);
+    font-size: var(--text-sm);
+    height: 42px;
+  }
+
+  .button--lg {
+    padding: var(--space-sm) var(--space-xl);
+    font-size: var(--text-base);
+    height: 52px;
+  }
+
+  .button--full-width {
+    display: flex;
+    width: 100%;
+  }
+
+  /* Variant: Primary (Premium Solid Gold) */
+  .button--primary {
+    background-color: var(--color-gold);
+    color: hsl(220 18% 7%);
+  }
+
+  .button--primary:hover:not(:disabled) {
+    background-color: var(--color-gold-hover);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  .button--primary:active:not(:disabled) {
+    transform: translateY(0);
+  }
+
+  /* Variant: Secondary (Sleek Dark Slate) */
+  .button--secondary {
+    background-color: var(--color-bg-secondary);
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .button--secondary:hover:not(:disabled) {
+    background-color: var(--color-surface-hover);
+    border-color: var(--color-border-hover);
+  }
+
+  /* Variant: Outline (Minimal border) */
+  .button--outline {
+    background-color: transparent;
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .button--outline:hover:not(:disabled) {
+    border-color: var(--color-gold);
+    color: var(--color-gold);
+  }
+
+  /* Variant: Glow (Premium accent) */
+  .button--glow {
+    background-color: transparent;
+    color: var(--color-gold);
+    border-color: var(--color-gold);
+    box-shadow: 0 0 10px var(--color-gold-glow);
+  }
+
+  .button--glow:hover:not(:disabled) {
+    background-color: var(--color-gold);
+    color: hsl(220 18% 7%);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-1px);
+  }
+
+  .button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}

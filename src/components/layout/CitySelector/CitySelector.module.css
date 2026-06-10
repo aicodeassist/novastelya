@@ -1,0 +1,99 @@
+@layer components {
+  .container {
+    position: relative;
+    display: inline-block;
+  }
+
+  .trigger {
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+    color: var(--color-text-secondary);
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-2xs) var(--space-sm);
+    border-radius: var(--radius-md);
+    transition: color var(--transition-fast), background-color var(--transition-fast);
+  }
+
+  .trigger:hover {
+    color: var(--color-gold);
+    background-color: var(--color-surface-hover);
+  }
+
+  .chevron {
+    transition: transform var(--transition-fast);
+  }
+
+  .chevron--open {
+    transform: rotate(180deg);
+  }
+
+  .backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+  }
+
+  .dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--space-2xs);
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    z-index: 1010;
+    min-width: 160px;
+    padding: var(--space-2xs) 0;
+    animation: dropdownFade var(--transition-fast);
+  }
+
+  :global([data-theme="dark"]) .dropdown {
+    background-color: var(--color-surface) !important;
+    border-color: rgba(255, 255, 255, 0.1) !important;
+  }
+
+  .dropdown li {
+    padding: var(--space-xs) var(--space-md);
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    transition: background-color var(--transition-fast), color var(--transition-fast);
+  }
+
+  .dropdown li:hover {
+    background-color: var(--color-surface-hover);
+    color: var(--color-gold);
+  }
+
+  .item--active {
+    color: var(--color-gold) !important;
+    font-weight: var(--font-weight-semibold);
+  }
+
+  @keyframes dropdownFade {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  /* For the mobile menu CitySelector: open the dropdown upwards to prevent cutting off */
+  :global([class*="mobileCitySelector"]) .dropdown {
+    top: auto !important;
+    bottom: 100% !important;
+    margin-top: 0 !important;
+    margin-bottom: var(--space-2xs) !important;
+    right: 0 !important;
+    left: auto !important;
+  }
+}

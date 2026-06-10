@@ -1,0 +1,43 @@
+{
+  "theme": {
+    "colors": {
+      "gold": "#BFA05D",
+      "goldHover": "#A88846",
+      "goldMuted": "rgba(191, 160, 93, 0.15)",
+      "bg": "#F9F9F9",
+      "bgSecondary": "#FFFFFF",
+      "surface": "#FFFFFF",
+      "surfaceHover": "#F9F9F9",
+      "border": "rgba(0, 0, 0, 0.08)",
+      "borderHover": "rgba(0, 0, 0, 0.16)",
+      "text": "#121212",
+      "textSecondary": "#666666",
+      "textMuted": "#999999"
+    },
+    "fonts": {
+      "sans": "'Inter', var(--font-inter), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+      "serif": "'Syne', var(--font-syne), sans-serif"
+    },
+    "radius": {
+      "xs": "4px",
+      "sm": "8px",
+      "md": "12px",
+      "lg": "24px",
+      "xl": "36px"
+    }
+  },
+  "contacts": {
+    "siteName": "NOVA STELYA",
+    "brand": "NOVA STELYA",
+    "url": "https://novastelya.com",
+    "phone": "0 800 000-000",
+    "email": "info@novastelya.com",
+    "foundingYear": 2015,
+    "socials": {
+      "instagram": "https://instagram.com/novastelya",
+      "facebook": "https://facebook.com/novastelya",
+      "telegram": "https://t.me/novastelya",
+      "viber": "viber://chat?number=%2B380000000000"
+    }
+  }
+}

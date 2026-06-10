@@ -1,0 +1,168 @@
+@layer components {
+  .hero {
+    padding: var(--space-3xl) 0;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    background: radial-gradient(circle at 10% 20%, hsl(38 30% 12%) 0%, var(--color-bg) 70%);
+  }
+
+  .heroContent {
+    max-width: 700px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-md);
+  }
+
+  .heroTitle {
+    font-size: var(--text-4xl);
+    font-weight: var(--font-weight-bold);
+    color: var(--color-text);
+  }
+
+  .heroText {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-relaxed);
+  }
+
+  .contactDetails {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md) var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    width: 100%;
+    margin-bottom: var(--space-xs);
+  }
+
+  .contactItem {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--text-sm);
+    gap: var(--space-md);
+  }
+
+  .contactItem span {
+    color: var(--color-text-muted);
+  }
+
+  .contactItem strong {
+    color: var(--color-text);
+    text-align: right;
+  }
+
+  .heroActions {
+    margin-top: var(--space-2xs);
+  }
+
+  /* --- SERVICES --- */
+  .servicesSection {
+    padding: var(--space-3xl) 0;
+    background-color: var(--color-bg-secondary);
+  }
+
+  .sectionTitle {
+    text-align: center;
+    font-size: var(--text-3xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-2xl);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-lg);
+  }
+
+  .serviceCard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 240px;
+  }
+
+  .priceBadge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+  }
+
+  .cardTitle {
+    font-size: var(--text-lg);
+    font-weight: var(--font-weight-semibold);
+    color: var(--color-text);
+    margin-top: var(--space-sm);
+    margin-bottom: var(--space-xs);
+  }
+
+  .cardDesc {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    line-height: var(--line-height-normal);
+    flex-grow: 1;
+    margin-bottom: var(--space-md);
+  }
+
+  .cardBtn {
+    align-self: flex-start;
+  }
+
+  /* --- GEO CONTEXT / LANDMARKS --- */
+  .geoContext {
+    padding: var(--space-3xl) 0;
+  }
+
+  .sectionSubtitle {
+    text-align: center;
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-xl);
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .landmarksGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-md);
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .landmarkItem {
+    background-color: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-md);
+    text-align: center;
+    font-size: var(--text-sm);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+    transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .landmarkItem:hover {
+    transform: translateY(-2px);
+    border-color: var(--color-gold-muted);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: var(--space-2xl) 0;
+    }
+
+    .contactItem {
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .contactItem strong {
+      text-align: left;
+    }
+  }
+}

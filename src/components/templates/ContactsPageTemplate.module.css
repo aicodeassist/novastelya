@@ -1,0 +1,94 @@
+@layer components {
+  .contactsSec {
+    padding: var(--space-3xl) 0;
+  }
+
+  .header {
+    text-align: center;
+    max-width: 800px;
+    margin: 0 auto var(--space-2xl) auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+  }
+
+  .title {
+    font-size: var(--text-3xl);
+    color: var(--color-text);
+  }
+
+  .subtitle {
+    font-size: var(--text-base);
+    color: var(--color-text-secondary);
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  .subTitle {
+    font-size: var(--text-2xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-lg);
+  }
+
+  .cardsStack {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  .officeCard {
+    position: relative;
+  }
+
+  .primaryBadge {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+  }
+
+  .officeCard h3 {
+    font-size: var(--text-lg);
+    color: var(--color-gold);
+    margin-bottom: var(--space-sm);
+  }
+
+  .officeCard p {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-2xs);
+    display: flex;
+    align-items: center;
+    gap: var(--space-xs);
+  }
+
+  .formCard h2 {
+    font-size: var(--text-xl);
+    color: var(--color-text);
+    margin-bottom: var(--space-xs);
+  }
+
+  .formCard p {
+    font-size: var(--text-sm);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-lg);
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-md);
+  }
+
+  @media (max-width: 900px) {
+    .grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+  }
+}

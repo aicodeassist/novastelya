@@ -1,0 +1,98 @@
+@layer reset, base, components, utilities;
+
+@layer reset {
+  /* Box sizing rules */
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Prevent font size inflation and set default smooth scroll */
+  html {
+    -moz-text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    text-size-adjust: none;
+    scroll-behavior: smooth;
+  }
+
+  /* Remove list styles on ul, ol elements */
+  ul,
+  ol {
+    list-style: none;
+  }
+
+  /* Set core body defaults */
+  body {
+    min-height: 100vh;
+    line-height: var(--line-height-normal);
+    text-rendering: optimizeSpeed;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Set shorter line heights on headings and interactive elements */
+  h1, h2, h3, h4, button, input, label {
+    line-height: var(--line-height-tight);
+  }
+
+  /* Balance text wrapping for headings */
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+
+  /* A elements that don't have a class get default styles */
+  a:not([class]) {
+    text-decoration-skip-ink: auto;
+    color: currentColor;
+  }
+
+  /* Make images easier to work with */
+  img,
+  picture,
+  canvas,
+  svg {
+    max-width: 100%;
+    display: block;
+    height: auto;
+  }
+
+  /* Inherit fonts for inputs and buttons */
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+    background: transparent;
+    border: none;
+  }
+
+  /* Make sure buttons look like buttons */
+  button,
+  [role="button"] {
+    cursor: pointer;
+  }
+
+  /* Anything that has been hidden should be hidden */
+  [hidden] {
+    display: none !important;
+  }
+
+  /* Remove all animations, transitions and smooth scroll for people that prefer not to see them */
+  @media (prefers-reduced-motion: reduce) {
+    html:focus-within {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
