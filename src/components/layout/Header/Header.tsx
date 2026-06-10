@@ -358,6 +358,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
           </button>
         </div>
       </div>
+    </header>
 
       {/* Mobile Menu */}
       {mobileMenuOpen && (
@@ -370,7 +371,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
             </li>
 
             {/* Collapsible Services for Mobile */}
-            <li className={styles.mobileNavItem}>
+            <li className={styles.mobileMenuNavItem}>
               <button
                 type="button"
                 className={styles.mobileNavButton}
@@ -500,7 +501,6 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
           </ul>
         </div>
       )}
-    </header>
 
       {/* Mobile Bottom Navigation Bar */}
       <nav className={styles.mobileNav} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
