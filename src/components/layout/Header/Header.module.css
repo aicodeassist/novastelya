@@ -7,16 +7,6 @@
   }
 }
 
-@keyframes mobileLinkFadeIn {
-  from {
-    opacity: 0;
-    transform: translate3d(-15px, 0, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
 
 @layer components {
   .header {
@@ -332,21 +322,7 @@
       gap: var(--space-md);
     }
 
-    .mobileNavList > li {
-      opacity: 0;
-      animation: mobileLinkFadeIn var(--transition-slow) var(--ease-premium) forwards;
-    }
 
-    .mobileNavList > li:nth-child(1) { animation-delay: 0.1s; }
-    .mobileNavList > li:nth-child(2) { animation-delay: 0.14s; }
-    .mobileNavList > li:nth-child(3) { animation-delay: 0.18s; }
-    .mobileNavList > li:nth-child(4) { animation-delay: 0.22s; }
-    .mobileNavList > li:nth-child(5) { animation-delay: 0.26s; }
-    .mobileNavList > li:nth-child(6) { animation-delay: 0.3s; }
-    .mobileNavList > li:nth-child(7) { animation-delay: 0.34s; }
-    .mobileNavList > li:nth-child(8) { animation-delay: 0.38s; }
-    .mobileNavList > li:nth-child(9) { animation-delay: 0.42s; }
-    .mobileNavList > li:nth-child(10) { animation-delay: 0.46s; }
 
     .mobileNavList > li > a,
     .mobileNavButton {
