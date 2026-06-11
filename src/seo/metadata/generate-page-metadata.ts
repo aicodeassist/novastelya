@@ -72,7 +72,9 @@ export async function generatePageMetadata({
   const canonical = buildCanonicalUrl(page, locale, city?.slug, slug);
   const alternates = buildHreflangAlternates(page, city?.slug, slug);
 
-  const robotsConfig = noindex || (overrides?.robots as any) === false || (overrides?.robots && typeof overrides.robots === 'object' && (overrides.robots as any).index === false)
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+
+  const robotsConfig = (!allowIndexing || noindex || (overrides?.robots as any) === false || (overrides?.robots && typeof overrides.robots === 'object' && (overrides.robots as any).index === false))
     ? {
         index: false,
         follow: true,
@@ -107,8 +109,8 @@ export async function generatePageMetadata({
       imageSlug: template.ogImageSlug,
     }),
     twitter: buildTwitterCard(title, description, template.ogImageSlug),
-    robots: robotsConfig,
     ...overrides,
+    robots: robotsConfig,
   };
 }
 export { generatePageMetadata as generateMetadata };

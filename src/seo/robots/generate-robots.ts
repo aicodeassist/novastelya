@@ -1,6 +1,19 @@
 import { SITE_URL } from "@/seo/constants/site";
 
 export function generateRobots() {
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+
+  if (!allowIndexing) {
+    return {
+      rules: [
+        {
+          userAgent: "*",
+          disallow: "/",
+        },
+      ],
+    };
+  }
+
   const isProd = process.env.NODE_ENV === "production";
 
   return {
