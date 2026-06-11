@@ -1,0 +1,699 @@
+/* OKLCH Color Tokens specifically for Design Lab */
+:root {
+  --dl-color-bg: oklch(99% 0.003 80);
+  --dl-color-surface: oklch(97.5% 0.005 80);
+  --dl-color-border: oklch(92% 0.004 80);
+  --dl-color-border-strong: oklch(85% 0.006 80);
+  --dl-color-text-main: oklch(15% 0.015 240);
+  --dl-color-text-secondary: oklch(40% 0.012 240);
+  --dl-color-text-muted: oklch(65% 0.008 240);
+  
+  /* Brand Accent: Gold-Bronze */
+  --dl-color-gold: oklch(68% 0.12 55);
+  --dl-color-gold-hover: oklch(63% 0.13 55);
+  --dl-color-gold-muted: oklch(45% 0.08 55);
+  --dl-color-gold-glow: oklch(68% 0.12 55 / 0.15);
+}
+
+.designLabWrapper {
+  background-color: var(--dl-color-bg);
+  color: var(--dl-color-text-main);
+  min-height: 100vh;
+  font-family: var(--font-family-sans);
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+}
+
+/* --- TOP BAR --- */
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background-color: rgba(251, 250, 247, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--dl-color-border);
+  padding: 1rem 0;
+}
+
+.topBarContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+}
+
+.topBarBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.labBadge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background-color: var(--dl-color-text-main);
+  color: var(--dl-color-bg);
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-xs);
+}
+
+.labTitle {
+  font-family: var(--font-family-serif);
+  font-weight: 800;
+  font-size: 1.15rem;
+  color: var(--dl-color-text-main);
+}
+
+.topBarNav {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.navLink {
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-semibold);
+  color: var(--dl-color-text-secondary);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+.navLink:hover,
+.navLinkActive {
+  color: var(--dl-color-gold);
+}
+
+.backLink {
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--dl-color-text-main);
+  text-decoration: none;
+  border: 1px solid var(--dl-color-text-main);
+  padding: 0.4rem 0.8rem;
+  border-radius: var(--radius-sm);
+  transition: all var(--transition-fast);
+}
+
+.backLink:hover {
+  background-color: var(--dl-color-text-main);
+  color: var(--dl-color-bg);
+}
+
+/* --- HERO SECTION --- */
+.heroSection {
+  padding: 5rem 0;
+  position: relative;
+  display: flex;
+  align-items: center;
+  
+  /* Starting Style for pure CSS mount transition */
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+  transition: opacity 1s var(--ease-premium), transform 1s var(--ease-premium);
+}
+
+@starting-style {
+  .heroSection {
+    opacity: 0;
+    transform: translate3d(0, 24px, 0);
+  }
+}
+
+.heroContainer {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  width: 100%;
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 4rem;
+  align-items: center;
+}
+
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.heroInfo {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  text-align: left;
+}
+
+.conceptBadge {
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--dl-color-gold);
+  border: 1px solid var(--dl-color-gold-glow);
+  background-color: var(--dl-color-gold-glow);
+  padding: 0.5rem 1rem;
+  border-radius: 100px;
+  margin-bottom: 2rem;
+}
+
+.heroTitle {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2.5rem, 5.5vw, 4.25rem);
+  font-weight: 900;
+  line-height: 1.02;
+  letter-spacing: -0.03em;
+  color: var(--dl-color-text-main);
+  margin-bottom: 2rem;
+}
+
+.goldText {
+  color: var(--dl-color-gold);
+  font-style: italic;
+}
+
+.heroDesc {
+  font-size: clamp(1rem, 2vw, 1.18rem);
+  line-height: 1.6;
+  color: var(--dl-color-text-secondary);
+  margin-bottom: 3rem;
+  max-width: 620px;
+}
+
+.heroActions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  width: 100%;
+}
+
+@media (max-width: 500px) {
+  .heroActions {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}
+
+.ctaPrimary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.1rem 2.2rem;
+  background-color: var(--dl-color-text-main);
+  color: var(--dl-color-bg);
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+  border-radius: 100px;
+  text-decoration: none;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  transition: all var(--transition-fast) var(--ease-premium);
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaPrimary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+  animation: heroShimmer 4s infinite ease-in-out;
+}
+
+@keyframes heroShimmer {
+  0%, 100% { left: -100%; opacity: 0; }
+  50% { left: 150%; opacity: 1; }
+}
+
+.ctaPrimary:hover {
+  transform: translate3d(0, -3px, 0);
+  background-color: var(--dl-color-gold);
+  box-shadow: var(--shadow-glow);
+}
+
+.ctaPrimary:active {
+  transform: translate3d(0, -1px, 0);
+}
+
+.ctaSecondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.1rem 2.2rem;
+  border: 1px solid var(--dl-color-border-strong);
+  color: var(--dl-color-text-main);
+  font-weight: var(--font-weight-semibold);
+  font-size: 0.95rem;
+  border-radius: 100px;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+}
+
+.ctaSecondary:hover {
+  border-color: var(--dl-color-text-main);
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.heroVisual {
+  display: flex;
+  justify-content: center;
+  perspective: 1000px;
+}
+
+.visualCard {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-xl);
+  transform: rotateY(-6deg) rotateX(4deg);
+  transition: transform var(--transition-slow) var(--ease-premium);
+}
+
+.visualCard:hover {
+  transform: rotateY(0deg) rotateX(0deg) scale(1.02);
+}
+
+.visualImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow) var(--ease-premium);
+}
+
+.visualCard:hover .visualImg {
+  transform: scale(1.05);
+}
+
+.visualOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+}
+
+.visualBadge {
+  position: absolute;
+  bottom: var(--space-md);
+  left: var(--space-md);
+  background-color: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  padding: 0.6rem 1.2rem;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+}
+
+:global([data-theme="dark"]) .visualBadge {
+  background-color: rgba(10, 11, 14, 0.9);
+  color: white;
+}
+
+.badgePulse {
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-success);
+  border-radius: 50%;
+  position: relative;
+}
+
+.badgePulse::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--color-success);
+  border-radius: 50%;
+  animation: pulseScale 2s infinite ease-out;
+}
+
+@keyframes pulseScale {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+
+/* --- SERVICES GRID SECTION --- */
+.servicesSection {
+  padding: 8rem 0;
+  background-color: var(--dl-color-surface);
+  border-top: 1px solid var(--dl-color-border);
+  border-bottom: 1px solid var(--dl-color-border);
+}
+
+.sectionHeader {
+  text-align: center;
+  max-width: 600px;
+  margin: 0 auto 5rem;
+}
+
+.sectionTitle {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 800;
+  color: var(--dl-color-text-main);
+  margin-bottom: 1rem;
+}
+
+.sectionSubtitle {
+  font-size: var(--text-base);
+  color: var(--dl-color-text-secondary);
+  line-height: 1.6;
+}
+
+.servicesGrid {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 var(--space-lg);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
+}
+
+@media (max-width: 1024px) {
+  .servicesGrid {
+    grid-template-columns: 1fr;
+    gap: var(--space-lg);
+  }
+}
+
+.serviceCard {
+  position: relative;
+  height: 480px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--dl-color-border);
+  cursor: pointer;
+  transition: all var(--transition-slow) var(--ease-premium);
+  display: flex;
+  align-items: flex-end;
+}
+
+.cardBg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.cardBg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow) var(--ease-premium);
+}
+
+.cardGradient {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 0%, rgba(0, 0, 0, 0.4) 50%, transparent 100%);
+  z-index: 2;
+  transition: opacity var(--transition-normal);
+}
+
+.cardContent {
+  position: relative;
+  z-index: 3;
+  padding: var(--space-lg);
+  color: white;
+  width: 100%;
+  transition: transform var(--transition-slow) var(--ease-premium);
+}
+
+.cardCategory {
+  font-size: 0.7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--dl-color-gold);
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.cardTitle {
+  font-family: var(--font-family-serif);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.cardDesc {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  opacity: 0.85;
+  margin-bottom: 1.5rem;
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all var(--transition-normal) var(--ease-premium);
+}
+
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding-top: 1rem;
+  margin-top: 1rem;
+}
+
+.cardPrice {
+  font-weight: var(--font-weight-bold);
+  font-size: 0.95rem;
+}
+
+.cardCta {
+  font-size: 0.85rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--dl-color-gold);
+  transition: transform var(--transition-fast);
+}
+
+/* --- Interactive :has() Hover Animations --- */
+.serviceCard:hover {
+  transform: translateY(-8px);
+  border-color: var(--dl-color-gold);
+  box-shadow: 0 15px 40px rgba(212, 163, 89, 0.12);
+}
+
+.serviceCard:hover .cardBg img {
+  transform: scale(1.06);
+}
+
+.serviceCard:hover .cardDesc {
+  max-height: 80px;
+  opacity: 1;
+  margin-bottom: 1rem;
+}
+
+.serviceCard:hover .cardCta {
+  transform: translateX(4px);
+}
+
+/* CSS :has() check. If the details button is active, squeeze card slightly */
+.serviceCard:has(.cardCta:active) {
+  transform: scale(0.98);
+}
+
+/* --- CONTAINER QUERY DEMONSTRATION --- */
+.containerSection {
+  padding: 8rem 0;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 8rem var(--space-lg);
+}
+
+.containerIntro {
+  max-width: 700px;
+  margin-bottom: 5rem;
+}
+
+.introBadge {
+  font-size: 0.7rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--dl-color-gold);
+  letter-spacing: 0.1em;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.containerTitle {
+  font-family: var(--font-family-serif);
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+}
+
+.containerDesc {
+  font-size: var(--text-base);
+  color: var(--dl-color-text-secondary);
+  line-height: 1.6;
+}
+
+.demoLayout {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 4rem;
+}
+
+@media (max-width: 1024px) {
+  .demoLayout {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+}
+
+.demoBoxWide,
+.demoBoxNarrow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.boxLabel {
+  font-size: 0.75rem;
+  font-weight: var(--font-weight-bold);
+  color: var(--dl-color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: 1px dashed var(--dl-color-border-strong);
+  padding-bottom: 0.5rem;
+}
+
+/* Define CSS Container Query Scope */
+.cardContainer {
+  container-type: inline-size;
+  width: 100%;
+}
+
+/* Base style (Mobile layout / narrow viewport) */
+.adaptiveCard {
+  background-color: var(--dl-color-surface);
+  border: 1px solid var(--dl-color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-sm);
+  transition: border-color var(--transition-fast);
+}
+
+.adaptiveCardImg {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.adaptiveCardImg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.adaptiveCardBody {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.adaptiveCardTag {
+  font-size: 0.65rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--dl-color-gold);
+}
+
+.adaptiveCardBody h3 {
+  font-family: var(--font-family-serif);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: var(--dl-color-text-main);
+  line-height: 1.2;
+}
+
+.adaptiveCardBody p {
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: var(--dl-color-text-secondary);
+}
+
+.adaptiveCardButton {
+  align-self: flex-start;
+  background-color: var(--dl-color-text-main);
+  color: var(--dl-color-bg);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  font-size: 0.8rem;
+  font-weight: var(--font-weight-bold);
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: background-color var(--transition-fast);
+}
+
+.adaptiveCardButton:hover {
+  background-color: var(--dl-color-gold);
+}
+
+/* --- Container Query (Wide viewport trigger) --- */
+@container (min-width: 500px) {
+  .adaptiveCard {
+    flex-direction: row;
+    align-items: stretch;
+    min-height: 280px;
+  }
+  
+  .adaptiveCardImg {
+    width: 40%;
+    aspect-ratio: auto;
+  }
+  
+  .adaptiveCardBody {
+    width: 60%;
+    padding: 2.25rem;
+    justify-content: center;
+    gap: 1rem;
+  }
+  
+  .adaptiveCardBody h3 {
+    font-size: 1.6rem;
+  }
+  
+  .adaptiveCardBody p {
+    font-size: 0.92rem;
+  }
+  
+  .adaptiveCardButton {
+    padding: 0.8rem 1.6rem;
+    font-size: 0.88rem;
+    margin-top: 1rem;
+  }
+}
+
+/* --- FOOTER --- */
+.labFooter {
+  padding: 4rem 0;
+  text-align: center;
+  border-top: 1px solid var(--dl-color-border);
+  font-size: 0.8rem;
+  color: var(--dl-color-text-muted);
+  background-color: var(--dl-color-surface);
+}
