@@ -38,6 +38,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
   const [catalogOpen, setCatalogOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
+  const [menuOpenDirection, setMenuOpenDirection] = useState<'top' | 'bottom'>('top');
 
   const isHeroPage = hasHeroHero(pathname || "");
 
@@ -293,16 +294,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
                 {locale === "uk" ? "Портфоліо" : "Портфолио"}
               </Link>
             </li>
-            <li className={styles.navItem}>
-              <Link href={localizedUrl("/faq")} className={styles.navLink}>
-                FAQ
-              </Link>
-            </li>
-            <li className={styles.navItem}>
-              <Link href={localizedUrl("/blog")} className={styles.navLink}>
-                {locale === "uk" ? "Блог" : "Блог"}
-              </Link>
-            </li>
+
             <li className={styles.navItem}>
               <Link href={localizedUrl("/about")} className={styles.navLink}>
                 {locale === "uk" ? "Про компанію" : "О компании"}
@@ -335,25 +327,24 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
           </a>
 
           {/* Hamburger */}
+          {/* Hamburger */}
           <button
-            className={styles.hamburger}
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className={`${styles.hamburger} ${mobileMenuOpen ? styles.hamburgerActive : ""}`}
+            onClick={() => {
+              if (mobileMenuOpen) {
+                setMobileMenuOpen(false);
+              } else {
+                setMenuOpenDirection('top');
+                setMobileMenuOpen(true);
+              }
+            }}
             aria-label="Відкрити меню"
             aria-expanded={mobileMenuOpen}
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              {mobileMenuOpen ? (
-                <>
-                  <line x1="18" y1="6" x2="6" y2="18" />
-                  <line x1="6" y1="6" x2="18" y2="18" />
-                </>
-              ) : (
-                <>
-                  <line x1="3" y1="12" x2="21" y2="12" />
-                  <line x1="3" y1="6" x2="21" y2="6" />
-                  <line x1="3" y1="18" x2="21" y2="18" />
-                </>
-              )}
+            <svg className={styles.topBurgerIcon} width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <line className={styles.topBurgerLineTop} x1="3" y1="6" x2="21" y2="6" />
+              <line className={styles.topBurgerLineMiddle} x1="3" y1="12" x2="21" y2="12" />
+              <line className={styles.topBurgerLineBottom} x1="3" y1="18" x2="21" y2="18" />
             </svg>
           </button>
         </div>
@@ -361,8 +352,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
     </header>
 
       {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className={styles.mobileMenu}>
+      <div className={`${styles.mobileMenu} ${mobileMenuOpen ? styles.mobileMenuOpen : ""} ${menuOpenDirection === 'bottom' ? styles.mobileMenuFromBottom : styles.mobileMenuFromTop}`}>
           <ul className={styles.mobileNavList}>
             <li>
               <Link href={localizedUrl("/")} onClick={() => setMobileMenuOpen(false)}>
@@ -448,16 +438,7 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
                 {locale === "uk" ? "Портфоліо" : "Портфолио"}
               </Link>
             </li>
-            <li>
-              <Link href={localizedUrl("/faq")} onClick={() => setMobileMenuOpen(false)}>
-                FAQ
-              </Link>
-            </li>
-            <li>
-              <Link href={localizedUrl("/blog")} onClick={() => setMobileMenuOpen(false)}>
-                {locale === "uk" ? "Блог" : "Блог"}
-              </Link>
-            </li>
+
             <li>
               <Link href={localizedUrl("/about")} onClick={() => setMobileMenuOpen(false)}>
                 {locale === "uk" ? "Про компанію" : "О компании"}
@@ -497,10 +478,9 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
             </li>
           </ul>
         </div>
-      )}
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className={`${styles.mobileNav} ${mobileMenuOpen ? styles.mobileNavHidden : ""}`} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
+      <nav className={styles.mobileNav} aria-label={locale === "uk" ? "Мобільна навігація" : "Мобильная навигация"}>
         <Link href={localizedUrl("/")} className={`${styles.mobileNavItem} ${pathname === localizedUrl("/") ? styles.active : ""}`} onClick={() => setMobileMenuOpen(false)}>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
@@ -544,12 +524,19 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
         <button
           type="button"
           className={`${styles.mobileNavItem} ${mobileMenuOpen ? styles.active : ""}`}
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          onClick={() => {
+            if (mobileMenuOpen) {
+              setMobileMenuOpen(false);
+            } else {
+              setMenuOpenDirection('bottom');
+              setMobileMenuOpen(true);
+            }
+          }}
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <line x1="3" y1="12" x2="21" y2="12" />
-            <line x1="3" y1="6" x2="21" y2="6" />
-            <line x1="3" y1="18" x2="21" y2="18" />
+          <svg className={`${styles.bottomBurgerIcon} ${mobileMenuOpen ? styles.burgerActive : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <line className={styles.bottomBurgerLineTop} x1="3" y1="6" x2="21" y2="6" />
+            <line className={styles.bottomBurgerLineMiddle} x1="3" y1="12" x2="21" y2="12" />
+            <line className={styles.bottomBurgerLineBottom} x1="3" y1="18" x2="21" y2="18" />
           </svg>
           <span>{locale === "uk" ? "Меню" : "Меню"}</span>
         </button>

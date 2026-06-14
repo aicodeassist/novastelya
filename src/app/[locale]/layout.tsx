@@ -2,6 +2,7 @@ import { ReactNode } from "react";
 import { Header, Footer, CityBanner, CookieConsent } from "@/components/layout";
 import { getCityBySlug } from "@/config/geo-matrix";
 import { SchemaScript, buildLocalBusinessSchema } from "@/seo";
+import settings from "@/config/settings.json";
 
 type Props = {
   children: ReactNode;
@@ -22,6 +23,8 @@ export default async function LocaleLayout({ children, params }: Props) {
     ? buildLocalBusinessSchema(currentCity, locale)
     : null;
 
+  const showCookieConsent = (settings as any).features?.cookieConsent !== false;
+
   return (
     <>
       {localBusinessSchema && <SchemaScript schema={localBusinessSchema} />}
@@ -29,7 +32,7 @@ export default async function LocaleLayout({ children, params }: Props) {
       <CityBanner locale={locale} />
       <main id="main-content">{children}</main>
       <Footer currentCity={currentCity} locale={locale} />
-      <CookieConsent locale={locale} />
+      {showCookieConsent && <CookieConsent locale={locale} />}
     </>
   );
 }

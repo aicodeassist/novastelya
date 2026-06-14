@@ -43,7 +43,7 @@ export async function CityHubPageTemplate({ cityConfig, locale }: CityHubProps) 
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <img
-            src="https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=2700&auto=format&fit=crop"
+            src="/hero.avif"
             alt={isUk ? `Натяжні стелі ${cityName}` : `Натяжные потолки ${cityName}`}
             className={styles.heroImg}
             loading="eager"

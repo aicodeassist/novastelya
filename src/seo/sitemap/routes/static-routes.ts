@@ -6,9 +6,7 @@ export function getStaticRoutes() {
   const staticPages = [
     { page: "home", config: SITEMAP_CONFIG.home },
     { page: "prices", config: SITEMAP_CONFIG.prices },
-    { page: "faq", config: SITEMAP_CONFIG.faq },
     { page: "portfolio", config: SITEMAP_CONFIG.portfolio },
-    { page: "blog", config: SITEMAP_CONFIG.blog },
     { page: "contacts", config: SITEMAP_CONFIG.contacts },
     { page: "about", config: SITEMAP_CONFIG.about },
   ] as const;

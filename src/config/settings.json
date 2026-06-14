@@ -39,5 +39,8 @@
       "telegram": "https://t.me/novastelya",
       "viber": "viber://chat?number=%2B380000000000"
     }
+  },
+  "features": {
+    "cookieConsent": false
   }
 }

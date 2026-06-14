@@ -22,7 +22,15 @@ export function generateRobots() {
           {
             userAgent: "*",
             allow: "/",
-            disallow: ["/api/", "/_next/", "/admin/"],
+            disallow: [
+              "/api/",
+              "/_next/",
+              "/admin/",
+              "/blog",
+              "/faq",
+              "/ru/blog",
+              "/ru/faq",
+            ],
           },
           {
             userAgent: ["GPTBot", "ClaudeBot", "PerplexityBot", "Googlebot"],

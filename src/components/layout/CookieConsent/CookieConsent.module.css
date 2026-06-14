@@ -45,11 +45,17 @@
     }
   }
 
+  @media (max-width: 1024px) {
+    .banner {
+      bottom: calc(75px + env(safe-area-inset-bottom) + var(--space-md));
+    }
+  }
+
   @media (max-width: 480px) {
     .banner {
       left: var(--space-md);
       right: var(--space-md);
-      bottom: var(--space-md);
+      bottom: calc(75px + env(safe-area-inset-bottom) + var(--space-sm));
       width: calc(100vw - var(--space-xl));
     }
   }

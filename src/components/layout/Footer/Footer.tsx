@@ -111,12 +111,7 @@ export function Footer({ currentCity: propCity, locale: propLocale }: FooterProp
               <li>
                 <Link href={localizedUrl("/portfolio")}>{locale === "uk" ? "Портфоліо" : "Портфолио"}</Link>
               </li>
-              <li>
-                <Link href={localizedUrl("/faq")}>FAQ</Link>
-              </li>
-              <li>
-                <Link href={localizedUrl("/blog")}>{locale === "uk" ? "Блог" : "Блог"}</Link>
-              </li>
+
               <li>
                 <Link href={localizedUrl("/pro-kompaniyu")}>
                   {locale === "uk" ? "Про компанію" : "О компании"}

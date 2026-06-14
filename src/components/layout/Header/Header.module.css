@@ -306,9 +306,23 @@
       border-top: none;
       border-bottom: 1px solid var(--color-border);
       z-index: 1050;
-      transform: translate3d(0, 0, 0);
-      -webkit-transform: translate3d(0, 0, 0);
-      animation: mobileMenuSlideDown var(--transition-slow) var(--ease-premium);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.65s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease;
+    }
+
+    .mobileMenuFromTop {
+      transform: translate3d(0, -100%, 0);
+    }
+
+    .mobileMenuFromBottom {
+      transform: translate3d(0, 100%, 0);
+    }
+
+    .mobileMenuOpen {
+      transform: translate3d(0, 0, 0) !important;
+      opacity: 1 !important;
+      pointer-events: auto !important;
     }
 
     :global([data-theme="dark"]) .mobileMenu {
@@ -483,6 +497,7 @@
       font-size: 1.1rem !important;
       font-weight: 700 !important;
       white-space: nowrap !important;
+      font-family: var(--font-family-sans) !important;
       padding: 0.75rem 1.25rem !important;
       border-radius: var(--radius-md) !important;
       box-shadow: 0 4px 15px rgba(212, 175, 55, 0.25) !important;
@@ -505,6 +520,7 @@
     .mobilePhoneLink span {
       display: inline-block !important;
       color: #0b0c10 !important;
+      font-family: var(--font-family-sans) !important;
     }
   }
 
@@ -640,6 +656,58 @@
     .mobileCallTrigger:active {
       transform: scale(0.9);
     }
+
+    /* Burger icon morph animations */
+    .topBurgerIcon line,
+    .bottomBurgerIcon line {
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      transform-origin: center;
+    }
+
+    .hamburgerActive .topBurgerLineTop {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .hamburgerActive .topBurgerLineMiddle {
+      opacity: 0;
+    }
+
+    .hamburgerActive .topBurgerLineBottom {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    .burgerActive .bottomBurgerLineTop {
+      transform: translateY(6px) rotate(45deg);
+    }
+
+    .burgerActive .bottomBurgerLineMiddle {
+      opacity: 0;
+    }
+
+    .burgerActive .bottomBurgerLineBottom {
+      transform: translateY(-6px) rotate(-45deg);
+    }
+
+    /* Staggered text animations for lists */
+    .mobileNavList > li {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    }
+
+    .mobileMenuOpen .mobileNavList > li {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobileMenuOpen .mobileNavList > li:nth-child(1) { transition-delay: 0.05s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(2) { transition-delay: 0.1s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(3) { transition-delay: 0.15s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(4) { transition-delay: 0.2s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(5) { transition-delay: 0.25s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(6) { transition-delay: 0.3s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(7) { transition-delay: 0.35s; }
+    .mobileMenuOpen .mobileNavList > li:nth-child(8) { transition-delay: 0.4s; }
   }
 
   @media (max-width: 1280px) and (min-width: 1025px) {
