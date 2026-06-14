@@ -248,9 +248,9 @@ export function BottomSheet({ isOpen, onClose, locale, currentCity }: BottomShee
               </a>
             )}
 
-            <a href="tel:+380670000000" className={styles.phoneRow}>
+            <a href="tel:+380964135267" className={styles.phoneRow}>
               <div>
-                <div className={styles.phoneNumber}>+38 (067) 000-00-00</div>
+                <div className={styles.phoneNumber}>096 41 35 267</div>
                 <div className={styles.phoneLabel}>Kyivstar</div>
               </div>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -258,9 +258,9 @@ export function BottomSheet({ isOpen, onClose, locale, currentCity }: BottomShee
               </svg>
             </a>
 
-            <a href="tel:+380990000000" className={styles.phoneRow}>
+            <a href="tel:+380664732484" className={styles.phoneRow}>
               <div>
-                <div className={styles.phoneNumber}>+38 (099) 000-00-00</div>
+                <div className={styles.phoneNumber}>066 47 32 484</div>
                 <div className={styles.phoneLabel}>Vodafone</div>
               </div>
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

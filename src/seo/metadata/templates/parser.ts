@@ -20,7 +20,7 @@ export function applyTemplatePlaceholders(templateStr: string, ctx: SeoContext):
 
   let cityText = "";
   let cityPhraseText = "";
-  let cityPhoneText = "+380 44 000-00-00"; // fallback
+  let cityPhoneText = "096 41 35 267"; // fallback
 
   if (city) {
     cityText = isUk ? city.uk : city.ru;
