@@ -19,7 +19,7 @@ describe("SEO Metadata Templates", () => {
     }));
 
     const ctx = {
-      pageType: "kitchen-ceilings", // category: "rooms"
+      pageType: "kukhnya", // category: "rooms"
       locale: "uk" as const,
       city: {
         slug: "odesa",
@@ -57,7 +57,7 @@ describe("SEO Metadata Templates", () => {
     }));
 
     const ctx = {
-      pageType: "matte-ceilings", // materials category
+      pageType: "matovi-steli", // materials category
       locale: "uk" as const,
       city: null
     };

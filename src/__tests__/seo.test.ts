@@ -1,22 +1,33 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, beforeEach, afterEach } from "vitest";
 import { buildPath, buildHreflangAlternates } from "@/seo";
 import { getCityBySlug, cities } from "@/config/geo-matrix";
 import { getServiceBySlug } from "@/config/services.config";
 import { resolveRoute } from "@/lib/route-resolver";
+import { parsePathname, getActiveCityFromParams, getActiveLocaleFromParams } from "@/lib/route-resolver";
+
+beforeEach(() => {
+  const kyiv = getCityBySlug("kyiv");
+  if (kyiv) kyiv.active = true;
+});
+
+afterEach(() => {
+  const kyiv = getCityBySlug("kyiv");
+  if (kyiv) kyiv.active = false;
+});
 
 describe("SEO Path Builder", () => {
   it("should generate correct paths for default locale (uk) without prefix", () => {
     const path = buildPath("home", "uk");
     expect(path).toBe("/");
 
-    const servicePath = buildPath("matte-ceilings", "uk");
-    expect(servicePath).toBe("/matte-ceilings");
+    const servicePath = buildPath("matovi-steli", "uk");
+    expect(servicePath).toBe("/matovi-steli");
 
     const cityPath = buildPath("home", "uk", "kyiv");
     expect(cityPath).toBe("/kyiv");
 
-    const cityServicePath = buildPath("matte-ceilings", "uk", "kyiv");
-    expect(cityServicePath).toBe("/kyiv/matte-ceilings");
+    const cityServicePath = buildPath("matovi-steli", "uk", "kyiv");
+    expect(cityServicePath).toBe("/kyiv/matovi-steli");
 
     const calcPath = buildPath("calculator", "uk");
     expect(calcPath).toBe("/calculator");
@@ -29,14 +40,14 @@ describe("SEO Path Builder", () => {
     const path = buildPath("home", "ru");
     expect(path).toBe("/ru");
 
-    const servicePath = buildPath("matte-ceilings", "ru");
-    expect(servicePath).toBe("/ru/matte-ceilings");
+    const servicePath = buildPath("matovi-steli", "ru");
+    expect(servicePath).toBe("/ru/matovi-steli");
 
     const cityPath = buildPath("home", "ru", "kyiv");
     expect(cityPath).toBe("/ru/kyiv");
 
-    const cityServicePath = buildPath("matte-ceilings", "ru", "kyiv");
-    expect(cityServicePath).toBe("/ru/kyiv/matte-ceilings");
+    const cityServicePath = buildPath("matovi-steli", "ru", "kyiv");
+    expect(cityServicePath).toBe("/ru/kyiv/matovi-steli");
 
     const calcPath = buildPath("calculator", "ru");
     expect(calcPath).toBe("/ru/calculator");
@@ -46,15 +57,15 @@ describe("SEO Path Builder", () => {
   });
 
   it("should clean trailing slashes correctly", () => {
-    const servicePath = buildPath("matte-ceilings", "uk");
+    const servicePath = buildPath("matovi-steli", "uk");
     expect(servicePath.endsWith("/")).toBe(false);
   });
 
   it("should generate correct hreflang alternates", () => {
-    const alternates = buildHreflangAlternates("matte-ceilings", "kyiv");
-    expect(alternates["x-default"]).toBe("https://novastelya.com/kyiv/matte-ceilings");
-    expect(alternates["uk-UA"]).toBe("https://novastelya.com/kyiv/matte-ceilings");
-    expect(alternates["ru-UA"]).toBe("https://novastelya.com/ru/kyiv/matte-ceilings");
+    const alternates = buildHreflangAlternates("matovi-steli", "kyiv");
+    expect(alternates["x-default"]).toBe("https://novastelya.com/kyiv/matovi-steli");
+    expect(alternates["uk-UA"]).toBe("https://novastelya.com/kyiv/matovi-steli");
+    expect(alternates["ru-UA"]).toBe("https://novastelya.com/ru/kyiv/matovi-steli");
   });
 });
 
@@ -69,7 +80,7 @@ describe("Geo Matrix and Configurations", () => {
   });
 
   it("should resolve services by slug correctly", () => {
-    const matte = getServiceBySlug("matte-ceilings");
+    const matte = getServiceBySlug("matovi-steli");
     expect(matte).not.toBeNull();
     expect(matte?.category).toBe("materials");
   });
@@ -97,17 +108,17 @@ describe("Route Resolver", () => {
     expect((kyivHub as any).city.slug).toBe("kyiv");
     expect((kyivHub as any).locale).toBe("uk");
 
-    const serviceUk = resolveRoute("matte-ceilings");
+    const serviceUk = resolveRoute("matovi-steli");
     expect(serviceUk.type).toBe("service");
-    expect((serviceUk as any).service.slug).toBe("matte-ceilings");
+    expect((serviceUk as any).service.slug).toBe("matovi-steli");
     expect((serviceUk as any).locale).toBe("uk");
 
-    const pricesUk = resolveRoute("prices");
+    const pricesUk = resolveRoute("ciny");
     expect(pricesUk.type).toBe("prices");
     expect((pricesUk as any).city).toBeNull();
     expect((pricesUk as any).locale).toBe("uk");
 
-    const contactsUk = resolveRoute("contacts");
+    const contactsUk = resolveRoute("kontakty");
     expect(contactsUk.type).toBe("contacts");
     expect((contactsUk as any).city).toBeNull();
     expect((contactsUk as any).locale).toBe("uk");
@@ -119,10 +130,10 @@ describe("Route Resolver", () => {
   });
 
   it("should resolve double segment routes", () => {
-    const kyivServiceUk = resolveRoute("kyiv", "matte-ceilings");
+    const kyivServiceUk = resolveRoute("kyiv", "matovi-steli");
     expect(kyivServiceUk.type).toBe("city-service");
     expect((kyivServiceUk as any).city.slug).toBe("kyiv");
-    expect((kyivServiceUk as any).service.slug).toBe("matte-ceilings");
+    expect((kyivServiceUk as any).service.slug).toBe("matovi-steli");
     expect((kyivServiceUk as any).locale).toBe("uk");
 
     const ruKyivHub = resolveRoute("ru", "kyiv");
@@ -130,22 +141,22 @@ describe("Route Resolver", () => {
     expect((ruKyivHub as any).city.slug).toBe("kyiv");
     expect((ruKyivHub as any).locale).toBe("ru");
 
-    const ruService = resolveRoute("ru", "matte-ceilings");
+    const ruService = resolveRoute("ru", "matovi-steli");
     expect(ruService.type).toBe("service");
-    expect((ruService as any).service.slug).toBe("matte-ceilings");
+    expect((ruService as any).service.slug).toBe("matovi-steli");
     expect((ruService as any).locale).toBe("ru");
 
-    const kyivPricesUk = resolveRoute("kyiv", "prices");
+    const kyivPricesUk = resolveRoute("kyiv", "ciny");
     expect(kyivPricesUk.type).toBe("prices");
     expect((kyivPricesUk as any).city.slug).toBe("kyiv");
     expect((kyivPricesUk as any).locale).toBe("uk");
 
-    const kyivContactsUk = resolveRoute("kyiv", "contacts");
+    const kyivContactsUk = resolveRoute("kyiv", "kontakty");
     expect(kyivContactsUk.type).toBe("contacts");
     expect((kyivContactsUk as any).city.slug).toBe("kyiv");
     expect((kyivContactsUk as any).locale).toBe("uk");
 
-    const ruContacts = resolveRoute("ru", "contacts");
+    const ruContacts = resolveRoute("ru", "kontakty");
     expect(ruContacts.type).toBe("contacts");
     expect((ruContacts as any).city).toBeNull();
     expect((ruContacts as any).locale).toBe("ru");
@@ -162,18 +173,18 @@ describe("Route Resolver", () => {
   });
 
   it("should resolve triple segment routes", () => {
-    const ruKyivService = resolveRoute("ru", "kyiv", "matte-ceilings");
+    const ruKyivService = resolveRoute("ru", "kyiv", "matovi-steli");
     expect(ruKyivService.type).toBe("city-service");
     expect((ruKyivService as any).city.slug).toBe("kyiv");
-    expect((ruKyivService as any).service.slug).toBe("matte-ceilings");
+    expect((ruKyivService as any).service.slug).toBe("matovi-steli");
     expect((ruKyivService as any).locale).toBe("ru");
 
-    const ruKyivPrices = resolveRoute("ru", "kyiv", "prices");
+    const ruKyivPrices = resolveRoute("ru", "kyiv", "ciny");
     expect(ruKyivPrices.type).toBe("prices");
     expect((ruKyivPrices as any).city.slug).toBe("kyiv");
     expect((ruKyivPrices as any).locale).toBe("ru");
 
-    const ruKyivContacts = resolveRoute("ru", "kyiv", "contacts");
+    const ruKyivContacts = resolveRoute("ru", "kyiv", "kontakty");
     expect(ruKyivContacts.type).toBe("contacts");
     expect((ruKyivContacts as any).city.slug).toBe("kyiv");
     expect((ruKyivContacts as any).locale).toBe("ru");
@@ -185,13 +196,13 @@ describe("Route Resolver", () => {
   });
 });
 
-import { parsePathname, getActiveCityFromParams, getActiveLocaleFromParams } from "@/lib/route-resolver";
-
 describe("parsePathname", () => {
   it("should parse various path combinations correctly", () => {
+    const dniproConfig = getCityBySlug("dnipro");
+
     // 1. Root
-    expect(parsePathname("/")).toEqual({ locale: "uk", city: null });
-    expect(parsePathname("/ru")).toEqual({ locale: "ru", city: null });
+    expect(parsePathname("/")).toEqual({ locale: "uk", city: dniproConfig });
+    expect(parsePathname("/ru")).toEqual({ locale: "ru", city: dniproConfig });
 
     // 2. City Hubs
     const kyivHub = parsePathname("/kyiv");
@@ -203,15 +214,15 @@ describe("parsePathname", () => {
     expect(ruKyivHub.city?.slug).toBe("kyiv");
 
     // 3. General Services
-    expect(parsePathname("/matte-ceilings")).toEqual({ locale: "uk", city: null });
-    expect(parsePathname("/ru/matte-ceilings")).toEqual({ locale: "ru", city: null });
+    expect(parsePathname("/matovi-steli")).toEqual({ locale: "uk", city: dniproConfig });
+    expect(parsePathname("/ru/matovi-steli")).toEqual({ locale: "ru", city: dniproConfig });
 
     // 4. City Services
-    const kyivService = parsePathname("/kyiv/matte-ceilings");
+    const kyivService = parsePathname("/kyiv/matovi-steli");
     expect(kyivService.locale).toBe("uk");
     expect(kyivService.city?.slug).toBe("kyiv");
 
-    const ruKyivService = parsePathname("/ru/kyiv/matte-ceilings");
+    const ruKyivService = parsePathname("/ru/kyiv/matovi-steli");
     expect(ruKyivService.locale).toBe("ru");
     expect(ruKyivService.city?.slug).toBe("kyiv");
   });
@@ -230,9 +241,8 @@ describe("Metadata Parameter Extractors (Route Shift)", () => {
     expect(getActiveLocaleFromParams(regularParams)).toBe("ru");
   });
 
-  it("should return null city and default locale when params are empty", () => {
-    expect(getActiveCityFromParams({})).toBeNull();
+  it("should return dnipro city and default locale when params are empty", () => {
+    expect(getActiveCityFromParams({})?.slug).toBe("dnipro");
     expect(getActiveLocaleFromParams({})).toBe("uk");
   });
 });
-

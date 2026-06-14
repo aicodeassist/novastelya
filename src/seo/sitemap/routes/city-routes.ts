@@ -11,6 +11,7 @@ export function getCityRoutes() {
   // City Hubs
   locales.forEach((locale) => {
     activeCities.forEach((city) => {
+      if (city.slug === "dnipro") return;
       // 1. Hub
       routes.push({
         url: buildCanonicalUrl("home", locale, city.slug),

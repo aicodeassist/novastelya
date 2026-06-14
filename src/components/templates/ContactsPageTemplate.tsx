@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { activeCities, getCityBySlug, CityConfig } from "@/config/geo-matrix";
-import { generatePageMetadata, SchemaScript } from "@/seo";
+import { generatePageMetadata, SchemaScript, buildPath } from "@/seo";
 import { Badge, Card, Button, Input } from "@/components/ui";
 import styles from "./ContactsPageTemplate.module.css";
 import { getActiveCityFromParams, getActiveLocaleFromParams } from "@/lib/route-resolver";
@@ -54,7 +54,7 @@ export async function ContactsPageTemplate({ cityConfig, locale: propLocale, par
     ? {
         "@context": "https://schema.org",
         "@type": "HomeAndConstructionBusiness",
-        "@id": `https://novastelya.com/${city.slug}/#business`,
+        "@id": `https://novastelya.com${buildPath("home", locale, city.slug)}#business`,
         "name": `NOVA STELYA ${city[locale]}`,
         "telephone": city.phone,
         "address": {

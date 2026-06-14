@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { Calculator } from "@/components/sections/Calculator/Calculator";
-import { generatePageMetadata, SchemaScript } from "@/seo";
+import { generatePageMetadata, SchemaScript, buildPath } from "@/seo";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
 import { getActiveCityFromParams, getActiveLocaleFromParams } from "@/lib/route-resolver";
 import styles from "./CalculatorPageTemplate.module.css";
@@ -72,11 +72,11 @@ export async function CalculatorPageTemplate({ cityConfig, locale: propLocale, p
         <div className="container">
           {/* Breadcrumbs */}
           <nav className={styles.breadcrumbs} aria-label={isUk ? "Навігація" : "Навигация"}>
-            <Link href={navPrefix || "/"}>{isUk ? "Головна" : "Главная"}</Link>
+            <Link href={buildPath("home", locale)}>{isUk ? "Головна" : "Главная"}</Link>
             <span className={styles.separator}>/</span>
-            {city && (
+            {city && city.slug !== "dnipro" && (
               <>
-                <Link href={`${navPrefix}/${city.slug}`}>{city[locale]}</Link>
+                <Link href={buildPath("home", locale, city.slug)}>{city[locale]}</Link>
                 <span className={styles.separator}>/</span>
               </>
             )}

@@ -1,7 +1,7 @@
 import React from "react";
 import { Metadata } from "next";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
-import { generatePageMetadata, SchemaScript, buildBreadcrumbSchema } from "@/seo";
+import { generatePageMetadata, SchemaScript, buildBreadcrumbSchema, buildPath } from "@/seo";
 import { Badge, Card } from "@/components/ui";
 import styles from "./PortfolioPageTemplate.module.css";
 import { getActiveCityFromParams, getActiveLocaleFromParams } from "@/lib/route-resolver";
@@ -113,9 +113,9 @@ export async function PortfolioPageTemplate({ cityConfig, locale: propLocale, pa
   const navPrefix = locale === "ru" ? "/ru" : "";
 
   const breadcrumbs = [
-    { name: isUk ? "Головна" : "Главная", url: navPrefix || "/" },
-    ...(city ? [{ name: city[locale], url: `${navPrefix}/${city.slug}` }] : []),
-    { name: isUk ? "Портфоліо" : "Портфолио", url: city ? `${navPrefix}/${city.slug}/portfolio` : `${navPrefix}/portfolio` }
+    { name: isUk ? "Головна" : "Главная", url: buildPath("home", locale) },
+    ...(city && city.slug !== "dnipro" ? [{ name: city[locale], url: buildPath("home", locale, city.slug) }] : []),
+    { name: isUk ? "Портфоліо" : "Портфолио", url: buildPath("portfolio", locale, city?.slug) }
   ];
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
 

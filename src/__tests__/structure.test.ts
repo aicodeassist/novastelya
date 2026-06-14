@@ -19,12 +19,12 @@ describe("CMS Structure Configuration", () => {
     expect(servicesJson.length).toBeGreaterThanOrEqual(15);
     expect(services.length).toEqual(servicesJson.length);
 
-    const childrens = getServiceBySlug("childrens-room-ceilings");
+    const childrens = getServiceBySlug("dytyacha");
     expect(childrens).not.toBeNull();
     expect(childrens?.category).toBe("rooms");
     expect(childrens?.uk.title).toContain("дитячу");
 
-    const office = getServiceBySlug("office-ceilings");
+    const office = getServiceBySlug("ofis");
     expect(office).not.toBeNull();
     expect(office?.category).toBe("rooms");
     expect(office?.uk.title).toContain("офіс");

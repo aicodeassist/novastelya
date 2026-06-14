@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { CityConfig, getCityBySlug } from "@/config/geo-matrix";
 import { parsePathname } from "@/lib/route-resolver";
 import styles from "./Footer.module.css";
+import { buildPath } from "@/seo/urls/build-path";
 
 type FooterProps = {
   currentCity: CityConfig | null;
@@ -36,26 +37,26 @@ export function Footer({ currentCity: propCity, locale: propLocale }: FooterProp
 
     setCurrentCity(null);
   }, [pathname, cityFromUrl, propCity]);
-  const navPrefix = locale === "ru" ? "/ru" : "";
-  const cityPrefix = currentCity ? `/${currentCity.slug}` : "";
 
+  // Helper to resolve clean path to unified SEO-safe routes
   const localizedUrl = (path: string) => {
-    if (path === "/") {
-      return `${navPrefix}${cityPrefix}` === "" ? "/" : `${navPrefix}${cityPrefix}`;
+    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+    let page: any = "home";
+    if (cleanPath === "") {
+      page = "home";
+    } else if (["prices", "ciny", "contacts", "kontakty", "faq", "portfolio", "about", "pro-kompaniyu", "blog"].includes(cleanPath)) {
+      page = cleanPath;
+    } else {
+      page = cleanPath;
     }
-    return `${navPrefix}${cityPrefix}${path}`;
+    return buildPath(page, locale, currentCity?.slug);
   };
 
-  const address = currentCity
-    ? locale === "uk"
-      ? currentCity.address
-      : currentCity.addressRu
-    : locale === "uk"
-    ? "Київ, вул. Хрещатик, 1 (Головний офіс)"
-    : "Киев, ул. Крещатик, 1 (Главный офис)";
-
-  const phone = currentCity ? currentCity.phone : "0 800 000-000";
-  const hours = currentCity ? currentCity.officeHours : "Пн-Сб 9:00-19:00";
+  const defaultCityConfig = getCityBySlug("dnipro")!;
+  const activeCity = currentCity || defaultCityConfig;
+  const address = locale === "uk" ? activeCity.address : activeCity.addressRu;
+  const phone = activeCity.phone;
+  const hours = activeCity.officeHours;
 
   return (
     <footer className={styles.footer}>
@@ -114,10 +115,10 @@ export function Footer({ currentCity: propCity, locale: propLocale }: FooterProp
                 <Link href={localizedUrl("/faq")}>FAQ</Link>
               </li>
               <li>
-                <Link href={navPrefix ? `${navPrefix}/blog` : "/blog"}>{locale === "uk" ? "Блог" : "Блог"}</Link>
+                <Link href={localizedUrl("/blog")}>{locale === "uk" ? "Блог" : "Блог"}</Link>
               </li>
               <li>
-                <Link href={navPrefix ? `${navPrefix}/about` : "/about"}>
+                <Link href={localizedUrl("/pro-kompaniyu")}>
                   {locale === "uk" ? "Про компанію" : "О компании"}
                 </Link>
               </li>

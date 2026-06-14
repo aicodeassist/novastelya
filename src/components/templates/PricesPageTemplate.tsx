@@ -2,7 +2,7 @@ import React from "react";
 import { Metadata } from "next";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
 import { services } from "@/config/services.config";
-import { generatePageMetadata, SchemaScript } from "@/seo";
+import { generatePageMetadata, SchemaScript, buildPath } from "@/seo";
 import { Badge, Button, Card } from "@/components/ui";
 import Link from "next/link";
 import styles from "./PricesPageTemplate.module.css";
@@ -122,7 +122,7 @@ export async function PricesPageTemplate({ cityConfig, locale: propLocale, param
                         </span>
                       </td>
                       <td>
-                        <Link href={`${navPrefix}${city ? `/${city.slug}` : ""}/${service.slug}`}>
+                        <Link href={buildPath(service.slug, locale, city?.slug)}>
                           <Button variant="secondary" size="sm">
                             {isUk ? "Детальніше" : "Подробнее"}
                           </Button>

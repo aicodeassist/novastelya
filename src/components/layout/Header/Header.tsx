@@ -8,6 +8,7 @@ import { CityConfig, getCityBySlug } from "@/config/geo-matrix";
 import { parsePathname } from "@/lib/route-resolver";
 import { BottomSheet } from "./BottomSheet";
 import styles from "./Header.module.css";
+import { buildPath } from "@/seo/urls/build-path";
 
 type HeaderProps = {
   currentCity: CityConfig | null;
@@ -17,13 +18,13 @@ type HeaderProps = {
 const hasHeroHero = (pathname: string) => {
   const cleanPath = pathname.replace(/^\/(ru|uk)/, "").replace(/^\//, "");
   if (cleanPath === "" || !cleanPath.includes("/")) {
-    const nonHeroPages = ["about", "contacts", "prices", "portfolio", "faq", "blog"];
+    const nonHeroPages = ["pro-kompaniyu", "kontakty", "ciny", "portfolio", "faq", "blog"];
     if (nonHeroPages.includes(cleanPath)) return false;
     return true;
   }
   const parts = cleanPath.split("/");
   const lastPart = parts[parts.length - 1];
-  const nonHeroSubpages = ["about", "contacts", "prices", "portfolio", "faq", "blog"];
+  const nonHeroSubpages = ["pro-kompaniyu", "kontakty", "ciny", "portfolio", "faq", "blog"];
   if (nonHeroSubpages.includes(lastPart)) return false;
   return true;
 };
@@ -113,15 +114,18 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
       : finalPath;
   };
 
-  const navPrefix = locale === "ru" ? "/ru" : "";
-  const cityPrefix = currentCity ? `/${currentCity.slug}` : "";
-
-  // Helper to append city context if present
+  // Helper to resolve clean path to unified SEO-safe routes
   const localizedUrl = (path: string) => {
-    if (path === "/") {
-      return `${navPrefix}${cityPrefix}` === "" ? "/" : `${navPrefix}${cityPrefix}`;
+    const cleanPath = path.startsWith("/") ? path.slice(1) : path;
+    let page: any = "home";
+    if (cleanPath === "") {
+      page = "home";
+    } else if (["prices", "ciny", "contacts", "kontakty", "faq", "portfolio", "about", "pro-kompaniyu", "blog"].includes(cleanPath)) {
+      page = cleanPath;
+    } else {
+      page = cleanPath;
     }
-    return `${navPrefix}${cityPrefix}${path}`;
+    return buildPath(page, locale, currentCity?.slug);
   };
 
   const isHeaderScrolled = scrolled || mobileMenuOpen;
@@ -295,12 +299,12 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
               </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href={navPrefix ? `${navPrefix}/blog` : "/blog"} className={styles.navLink}>
+              <Link href={localizedUrl("/blog")} className={styles.navLink}>
                 {locale === "uk" ? "Блог" : "Блог"}
               </Link>
             </li>
             <li className={styles.navItem}>
-              <Link href={navPrefix ? `${navPrefix}/about` : "/about"} className={styles.navLink}>
+              <Link href={localizedUrl("/about")} className={styles.navLink}>
                 {locale === "uk" ? "Про компанію" : "О компании"}
               </Link>
             </li>
@@ -314,10 +318,6 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
 
         {/* Actions */}
         <div className={styles.actions}>
-          <div className={styles.desktopOnly}>
-            <CitySelector currentCity={currentCity} locale={locale} className={isHeaderScrolled ? styles.cityTriggerScrolled : styles.cityTrigger} />
-          </div>
-
           <div className={`${styles.langSelector} ${styles.desktopOnly}`} role="navigation" aria-label="Вибір мови">
             <Link
               href={toggleLocaleUrl("uk")}
@@ -454,12 +454,12 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
               </Link>
             </li>
             <li>
-              <Link href={navPrefix ? `${navPrefix}/blog` : "/blog"} onClick={() => setMobileMenuOpen(false)}>
+              <Link href={localizedUrl("/blog")} onClick={() => setMobileMenuOpen(false)}>
                 {locale === "uk" ? "Блог" : "Блог"}
               </Link>
             </li>
             <li>
-              <Link href={navPrefix ? `${navPrefix}/about` : "/about"} onClick={() => setMobileMenuOpen(false)}>
+              <Link href={localizedUrl("/about")} onClick={() => setMobileMenuOpen(false)}>
                 {locale === "uk" ? "Про компанію" : "О компании"}
               </Link>
             </li>
@@ -479,11 +479,8 @@ export function Header({ currentCity: propCity, locale: propLocale }: HeaderProp
               </a>
             </li>
 
-            {/* Mobile Meta (Language & City) Selector */}
+            {/* Mobile Meta (Language) Selector */}
             <li className={styles.mobileMetaRow}>
-              <div className={styles.mobileCitySelector}>
-                <CitySelector currentCity={currentCity} locale={locale} className={styles.mobileCityTrigger} />
-              </div>
               <div className={styles.mobileLangSelector} role="navigation" aria-label="Вибір мови">
                 <Link
                   href={toggleLocaleUrl("uk")}

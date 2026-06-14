@@ -21,13 +21,18 @@ export function resolveRoute(
   cityParam: string | undefined = undefined,
   serviceParam: string | undefined = undefined
 ): ResolvedRoute {
+  // Block public /dnipro prefix URLs since Dnipro must always be non-prefixed
+  if (localeParam === "dnipro" || cityParam === "dnipro" || serviceParam === "dnipro") {
+    return { type: "not-found" };
+  }
+
   // Case 1: Three segments (prefixed Russian city pages: /ru/kyiv/matte-ceilings, /ru/kyiv/prices, etc.)
   if (localeParam && cityParam && serviceParam) {
     const locale = localeParam as "uk" | "ru";
     if (locale === "uk" || locale === "ru") {
       const cityConfig = getCityBySlug(cityParam);
       if (cityConfig && cityConfig.active) {
-        if (serviceParam === "prices") {
+        if (serviceParam === "prices" || serviceParam === "ciny") {
           return { type: "prices", city: cityConfig, locale };
         }
         if (serviceParam === "calculator") {
@@ -39,14 +44,14 @@ export function resolveRoute(
         if (serviceParam === "faq") {
           return { type: "faq", city: cityConfig, locale };
         }
-        if (serviceParam === "contacts") {
+        if (serviceParam === "contacts" || serviceParam === "kontakty") {
           return { type: "contacts", city: cityConfig, locale };
         }
         if (serviceParam === "blog") {
           return { type: "redirect", url: locale === "ru" ? "/ru/blog" : "/blog" };
         }
-        if (serviceParam === "about") {
-          return { type: "redirect", url: locale === "ru" ? "/ru/about" : "/about" };
+        if (serviceParam === "about" || serviceParam === "pro-kompaniyu") {
+          return { type: "redirect", url: locale === "ru" ? "/ru/pro-kompaniyu" : "/pro-kompaniyu" };
         }
         const serviceConfig = getServiceBySlug(serviceParam);
         if (serviceConfig) {
@@ -62,7 +67,7 @@ export function resolveRoute(
     // A. Prefix-less Ukrainian city sub-pages: e.g. /kyiv/matte-ceilings, /kyiv/prices
     const cityConfig = getCityBySlug(localeParam);
     if (cityConfig && cityConfig.active) {
-      if (cityParam === "prices") {
+      if (cityParam === "prices" || cityParam === "ciny") {
         return { type: "prices", city: cityConfig, locale: "uk" };
       }
       if (cityParam === "calculator") {
@@ -74,14 +79,14 @@ export function resolveRoute(
       if (cityParam === "faq") {
         return { type: "faq", city: cityConfig, locale: "uk" };
       }
-      if (cityParam === "contacts") {
+      if (cityParam === "contacts" || cityParam === "kontakty") {
         return { type: "contacts", city: cityConfig, locale: "uk" };
       }
       if (cityParam === "blog") {
         return { type: "redirect", url: "/blog" };
       }
-      if (cityParam === "about") {
-        return { type: "redirect", url: "/about" };
+      if (cityParam === "about" || cityParam === "pro-kompaniyu") {
+        return { type: "redirect", url: "/pro-kompaniyu" };
       }
       const serviceConfig = getServiceBySlug(cityParam);
       if (serviceConfig) {
@@ -101,7 +106,7 @@ export function resolveRoute(
       if (serviceConfig) {
         return { type: "service", service: serviceConfig, locale };
       }
-      if (cityParam === "prices") {
+      if (cityParam === "prices" || cityParam === "ciny") {
         return { type: "prices", city: null, locale };
       }
       if (cityParam === "calculator") {
@@ -113,10 +118,10 @@ export function resolveRoute(
       if (cityParam === "faq") {
         return { type: "faq", city: null, locale };
       }
-      if (cityParam === "contacts") {
+      if (cityParam === "contacts" || cityParam === "kontakty") {
         return { type: "contacts", city: null, locale };
       }
-      if (cityParam === "about") {
+      if (cityParam === "about" || cityParam === "pro-kompaniyu") {
         return { type: "about", locale };
       }
       if (cityParam === "blog") {
@@ -144,7 +149,7 @@ export function resolveRoute(
     if (localeParam === "uk" || localeParam === "ru") {
       return { type: "home", locale: localeParam as "uk" | "ru" };
     }
-    if (localeParam === "prices") {
+    if (localeParam === "prices" || localeParam === "ciny") {
       return { type: "prices", city: null, locale: "uk" };
     }
     if (localeParam === "calculator") {
@@ -156,10 +161,10 @@ export function resolveRoute(
     if (localeParam === "faq") {
       return { type: "faq", city: null, locale: "uk" };
     }
-    if (localeParam === "contacts") {
+    if (localeParam === "contacts" || localeParam === "kontakty") {
       return { type: "contacts", city: null, locale: "uk" };
     }
-    if (localeParam === "about") {
+    if (localeParam === "about" || localeParam === "pro-kompaniyu") {
       return { type: "about", locale: "uk" };
     }
     if (localeParam === "blog") {
@@ -172,17 +177,18 @@ export function resolveRoute(
 
 // Client/Server parameter decoders for active city and locale
 export function getActiveCityFromParams(params: any): CityConfig | null {
-  if (!params) return null;
+  const defaultCityConfig = getCityBySlug("dnipro");
+  if (!params) return defaultCityConfig;
   const locale = params.locale as string | undefined;
   const city = params.city as string | undefined;
 
   const cityFromLocale = getCityBySlug(locale);
-  if (cityFromLocale && cityFromLocale.active) return cityFromLocale;
+  if (cityFromLocale && cityFromLocale.active && cityFromLocale.slug !== "dnipro") return cityFromLocale;
 
   const cityFromCity = getCityBySlug(city);
-  if (cityFromCity && cityFromCity.active) return cityFromCity;
+  if (cityFromCity && cityFromCity.active && cityFromCity.slug !== "dnipro") return cityFromCity;
 
-  return null;
+  return defaultCityConfig;
 }
 
 export function getActiveLocaleFromParams(params: any): "uk" | "ru" {
@@ -206,6 +212,6 @@ export function parsePathname(pathname: string): { locale: "uk" | "ru"; city: Ci
   
   return {
     locale,
-    city: city && city.active ? city : null,
+    city: city && city.active && city.slug !== "dnipro" ? city : getCityBySlug("dnipro"),
   };
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { generatePageMetadata, SchemaScript, buildServiceSchema, buildFAQSchema, buildBreadcrumbSchema } from "@/seo";
+import { generatePageMetadata, SchemaScript, buildServiceSchema, buildFAQSchema, buildBreadcrumbSchema, buildPath } from "@/seo";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
 import { getServiceBySlug, ServiceSlug } from "@/config/services.config";
 import { Button, Card, Badge } from "@/components/ui";
@@ -183,9 +183,9 @@ export async function ServicePageTemplate({ serviceSlug, cityConfig, locale: pro
   const navPrefix = locale === "ru" ? "/ru" : "";
 
   const breadcrumbs = [
-    { name: isUk ? "Головна" : "Главная", url: navPrefix || "/" },
-    ...(city ? [{ name: city[locale as "uk" | "ru"], url: `${navPrefix}/${city.slug}` }] : []),
-    { name: service[locale as "uk" | "ru"].breadcrumb, url: city ? `${navPrefix}/${city.slug}/${service.slug}` : `${navPrefix}/${service.slug}` }
+    { name: isUk ? "Головна" : "Главная", url: buildPath("home", locale) },
+    ...(city && city.slug !== "dnipro" ? [{ name: city[locale], url: buildPath("home", locale, city.slug) }] : []),
+    { name: service[locale].breadcrumb, url: buildPath(service.slug, locale, city?.slug) }
   ];
   const breadcrumbSchema = buildBreadcrumbSchema(breadcrumbs);
 

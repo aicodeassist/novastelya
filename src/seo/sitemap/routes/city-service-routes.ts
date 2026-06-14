@@ -9,8 +9,10 @@ export function getCityServiceRoutes() {
   const now = new Date();
 
   return locales.flatMap((locale) =>
-    activeCities.flatMap((city) =>
-      services.map((service) => ({
+    activeCities
+      .filter((city) => city.slug !== "dnipro")
+      .flatMap((city) =>
+        services.map((service) => ({
         url: buildCanonicalUrl(service.slug, locale, city.slug),
         lastModified: now,
         changeFrequency: config.changeFrequency,

@@ -25,19 +25,9 @@ export async function middleware(request: NextRequest) {
   const ua = (request.headers.get("user-agent") ?? "").toLowerCase();
   const isBot = AI_BOTS.some((bot) => ua.includes(bot));
 
-  const preferredCity = request.cookies.get("preferred-city")?.value;
-  // Vercel Edge geolocation header (can be mocked or read)
-  const detectedCity = (request as any).geo?.city?.toLowerCase() || "";
-
   // 1. Prepare request headers to pass information to React Server Components (RSCs)
   const requestHeaders = new Headers(request.headers);
   
-  if (preferredCity) {
-    requestHeaders.set("x-preferred-city", preferredCity);
-  } else if (detectedCity) {
-    requestHeaders.set("x-detected-city", detectedCity);
-  }
-
   if (isBot) {
     requestHeaders.set("x-is-bot", "true");
   }
@@ -53,10 +43,6 @@ export async function middleware(request: NextRequest) {
   if (isBot) {
     response.headers.set("x-render-mode", "static");
     response.headers.set("x-is-bot", "true");
-  }
-
-  if (!preferredCity && detectedCity) {
-    response.headers.set("x-detected-city", detectedCity);
   }
 
   return response;

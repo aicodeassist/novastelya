@@ -47,11 +47,11 @@ describe("Dynamic Blocks Naming and Placeholders", () => {
   });
 
   it("should resolve services and room service categories correctly", () => {
-    const matte = getServiceBySlug("matte-ceilings");
+    const matte = getServiceBySlug("matovi-steli");
     expect(matte).not.toBeNull();
     expect(matte?.category).toBe("materials");
 
-    const kitchen = getServiceBySlug("kitchen-ceilings");
+    const kitchen = getServiceBySlug("kukhnya");
     expect(kitchen).not.toBeNull();
     expect(kitchen?.category).toBe("rooms");
   });

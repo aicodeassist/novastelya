@@ -34,6 +34,7 @@ for (const city of cities) {
 // Активні міста — використовується в generateStaticParams
 export const activeCities = cities.filter(c => c.active);
 export type CitySlug = string;
+export const defaultCity = "dnipro";
 
 export function getCityBySlug(slug: string | undefined): CityConfig | null {
   if (!slug) return null;
