@@ -72,7 +72,7 @@ export async function generatePageMetadata({
   const canonical = buildCanonicalUrl(page, locale, city?.slug, slug);
   const alternates = buildHreflangAlternates(page, city?.slug, slug);
 
-  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false";
 
   const robotsConfig = (!allowIndexing || noindex || (overrides?.robots as any) === false || (overrides?.robots && typeof overrides.robots === 'object' && (overrides.robots as any).index === false))
     ? {

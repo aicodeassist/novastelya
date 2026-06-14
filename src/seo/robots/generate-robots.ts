@@ -1,7 +1,7 @@
 import { SITE_URL } from "@/seo/constants/site";
 
 export function generateRobots() {
-  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING === "true";
+  const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false";
 
   if (!allowIndexing) {
     return {
