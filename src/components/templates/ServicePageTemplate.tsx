@@ -54,66 +54,70 @@ function getCalculatorDefaults(serviceSlug: string) {
   let defaultLights: Record<string, number> | null = null;
 
   switch (serviceSlug) {
-    case "kitchen-ceilings":
+    // Rooms
+    case "kukhnya":
       defaultRoom = "kitchen";
       break;
-    case "bathroom-ceilings":
+    case "vanna-kimnata":
       defaultRoom = "bathroom";
       defaultMaterial = "translucent";
       defaultTech = "shadow";
       break;
-    case "bedroom-ceilings":
+    case "spalnya":
       defaultRoom = "bedroom";
       break;
-    case "living-room-ceilings":
+    case "vitalnya":
       defaultRoom = "living";
       break;
-    case "childrens-room-ceilings":
+    case "dytyacha":
       defaultRoom = "kids";
       break;
-    case "office-ceilings":
+    case "ofis":
       defaultRoom = "office";
       break;
 
-    case "matte-ceilings":
+    // Materials
+    case "matovi-steli":
       defaultMaterial = "matte";
       break;
-    case "satin-ceilings":
+    case "satynovi-steli":
       defaultMaterial = "satin";
       break;
-    case "glossy-ceilings":
+    case "glyancevi-steli":
       defaultMaterial = "glossy";
       break;
-    case "fabric-ceilings":
+    case "tkanynni-steli":
       defaultMaterial = "fabric";
       break;
 
-    case "shadow-ceilings":
+    // Designs / Tech
+    case "tinovi-steli":
       defaultTech = "shadow";
       break;
-    case "floating-ceilings":
+    case "paryashchi-steli":
       defaultTech = "floating";
       break;
-    case "slotted-ceilings":
+    case "nishevi-steli":
       defaultTech = "slotted";
       break;
-    case "carved-ceilings":
+    case "rizbleni-steli":
       defaultTech = "carved";
       break;
-    case "double-level-ceilings":
+    case "dvorivnevi-steli":
       defaultTech = "double";
       break;
 
-    case "light-lines":
+    // Lighting
+    case "svitlovi-liniyi":
       defaultLights = { line: 5 };
       break;
-    case "track-lighting":
+    case "trekove-svitlo":
       defaultLights = { track: 4 };
       break;
-    case "backlight":
+    case "konturne-pidsvichuvannya":
       defaultLights = { backlight: 10 };
       break;
-    case "starry-sky":
+    case "zoryane-nebo":
       defaultRoom = "bedroom";
       defaultLights = { starry: 4 };
       break;
