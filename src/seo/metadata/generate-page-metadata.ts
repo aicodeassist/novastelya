@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import type { PageType } from "@/seo/types/seo.types";
 import type { Locale } from "@/config/locales.config";
-import type { CityConfig } from "@/config/geo-matrix";
+import { getCityBySlug, type CityConfig } from "@/config/geo-matrix";
 import { buildCanonicalUrl } from "@/seo/urls/build-canonical";
 import { buildHreflangAlternates } from "@/seo/alternates/build-hreflang";
 import { buildOpenGraph, buildTwitterCard } from "./core";
@@ -51,26 +51,31 @@ export async function generatePageMetadata({
 }: MetadataParams): Promise<Metadata> {
   const locale: Locale = rawLocale === "ru" ? "ru" : "uk";
   
+  // Default to Dnipro city config for prefix-less pages (as URL without city = ALWAYS Dnipro)
+  const resolvedCity = city !== undefined ? city : getCityBySlug("dnipro");
+  
   const ctx = {
     pageType: page,
     locale,
-    city,
+    city: resolvedCity,
     slug,
     noindex,
   };
 
   const template = getMetadataTemplate(ctx);
   
-  // Apply overrides if present
-  const overrideKey = `${locale}-${city?.slug || "national"}-${page}`;
+  // Apply overrides if present (prefer city-specific, fallback to national)
   const allOverrides = getMetadataOverrides();
-  const pageOverride = allOverrides[overrideKey];
+  const citySlugKey = resolvedCity?.slug || "national";
+  const cityOverrideKey = `${locale}-${citySlugKey}-${page}`;
+  const nationalOverrideKey = `${locale}-national-${page}`;
+  const pageOverride = allOverrides[cityOverrideKey] || allOverrides[nationalOverrideKey];
   
   const title = pageOverride?.title || template.title;
   const description = pageOverride?.description || template.description;
 
-  const canonical = buildCanonicalUrl(page, locale, city?.slug, slug);
-  const alternates = buildHreflangAlternates(page, city?.slug, slug);
+  const canonical = buildCanonicalUrl(page, locale, resolvedCity?.slug, slug);
+  const alternates = buildHreflangAlternates(page, resolvedCity?.slug, slug);
 
   const allowIndexing = process.env.NEXT_PUBLIC_ALLOW_INDEXING !== "false";
 
