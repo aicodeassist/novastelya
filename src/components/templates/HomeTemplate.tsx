@@ -95,7 +95,7 @@ export function HomeTemplate({ locale }: HomeProps) {
         <div className="container">
           <div className={styles.heroContent}>
             <span className={styles.heroBadge}>
-              ENGINEERING & AESTHETICS • KYIV
+              ENGINEERING & AESTHETICS • DNIPRO
             </span>
             <h1 className={`${styles.heroTitle} text-glow`}>
               {isUk ? "Сучасні Натяжні Стелі" : "Современные Натяжные Потолки"}
