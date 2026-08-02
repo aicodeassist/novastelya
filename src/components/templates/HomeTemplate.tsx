@@ -98,7 +98,7 @@ export function HomeTemplate({ locale }: HomeProps) {
               ENGINEERING & AESTHETICS • DNIPRO
             </span>
             <h1 className={`${styles.heroTitle} text-glow`}>
-              {isUk ? "Сучасні Натяжні Стелі" : "Современные Натяжные Потолки"}
+              {isUk ? "Сучасні натяжні стелі у Дніпрі" : "Современные потолки в Днепре"}
             </h1>
             <p className={styles.heroText}>
               {isUk
