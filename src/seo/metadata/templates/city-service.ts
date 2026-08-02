@@ -25,8 +25,8 @@ export function getCityServiceMetadata(ctx: SeoContext) {
   return {
     title: buildTitle(
       isUk
-        ? `${serviceName} ${cityInCity} — ціна за м², фото, монтаж під ключ`
-        : `${serviceName} ${cityInCity} — цена за м², фото, монтаж под ключ`
+        ? `${serviceName} ${cityInCity} за 1 день`
+        : `${serviceName} ${cityInCity} за 1 день`
     ),
     description: buildDescription(
       isUk
