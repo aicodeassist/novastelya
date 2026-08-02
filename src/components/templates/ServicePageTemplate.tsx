@@ -269,7 +269,7 @@ export async function ServicePageTemplate({ serviceSlug, cityConfig, locale: pro
             <div className="container">
               <div className={styles.heroContent}>
                 <span className={styles.heroBadge}>
-                  ENGINEERING & AESTHETICS • {city ? city.slug.toUpperCase() : "KYIV"}
+                  ENGINEERING & AESTHETICS • {city ? city.slug.toUpperCase() : "DNIPRO"}
                 </span>
                 <h1 className={`${styles.title} text-glow`}>
                   {finalH1}
