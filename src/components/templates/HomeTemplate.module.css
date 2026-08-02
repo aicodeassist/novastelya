@@ -29,7 +29,7 @@
     position: absolute;
     inset: 0;
     z-index: 2;
-    background: radial-gradient(circle at 30% 50%, rgba(0,0,0,0.3) 0%, rgba(5,5,5,0.8) 80%),
+    background: radial-gradient(circle at 30% 40%, rgba(0,0,0,0.3) 0%, rgba(5,5,5,0.8) 50%),
                 linear-gradient(to bottom, transparent 70%, var(--color-bg) 100%);
   }
 
