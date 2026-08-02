@@ -15,8 +15,8 @@ export function getHomeMetadata(ctx: SeoContext) {
     return {
       title: buildTitle(
         isUk 
-          ? `Натяжні стелі ${cityInCity} за 1 день | NOVA STELYA`
-          : `Натяжные потолки ${cityInCity} за 1 день | NOVA STELYA`
+          ? `Натяжні стелі ${cityInCity} за 1 день`
+          : `Натяжные потолки ${cityInCity} за 1 день`
       ),
       description: buildDescription(
         isUk
