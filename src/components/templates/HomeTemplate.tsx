@@ -85,7 +85,7 @@ export function HomeTemplate({ locale }: HomeProps) {
       <section className={styles.hero}>
         <div className={styles.heroBg}>
           <img
-            src="/hero.avif"
+            src="/hero.webp"
             alt={isUk ? "Сучасні натяжні стелі у Дніпрі" : "Современные натяжные потолки в Днепре"}
             className={styles.heroImg}
             loading="eager"
