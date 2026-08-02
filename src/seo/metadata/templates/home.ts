@@ -15,8 +15,8 @@ export function getHomeMetadata(ctx: SeoContext) {
     return {
       title: buildTitle(
         isUk 
-          ? `Натяжні стелі ${cityInCity} — ціна за м² з монтажем, фото, встановлення під ключ`
-          : `Натяжные потолки ${cityInCity} — цена за м² с монтажом, фото, установка под ключ`
+          ? `Натяжні стелі у ${cityInCity} за 1 день | NOVA STELYA`
+          : `Натяжные потолки в ${cityInCity} за 1 день | NOVA STELYA`
       ),
       description: buildDescription(
         isUk
