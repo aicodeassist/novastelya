@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { Metadata } from "next";
 import { activeCities, getCityBySlug, CityConfig } from "@/config/geo-matrix";
@@ -93,10 +94,10 @@ export async function ContactsPageTemplate({ cityConfig, locale: propLocale, par
           <div className={styles.header}>
             <Badge variant="gold">{isUk ? "Контакти" : "Контакты"}</Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk 
+                {getDniproSeo("contacts", locale, city?.slug ?? "dnipro")?.h1 ?? (isUk 
                 ? `Контакти NOVA STELYA${citySuffix}` 
-                : `Контакты NOVA STELYA${citySuffix}`}
-            </h1>
+                : `Контакты NOVA STELYA${citySuffix}`)}
+              </h1>
             <p className={styles.subtitle}>
               {city
                 ? (isUk

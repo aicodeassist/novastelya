@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import Link from "next/link";
 import { SchemaScript } from "@/seo";
@@ -98,8 +99,8 @@ export function HomeTemplate({ locale }: HomeProps) {
               ENGINEERING & AESTHETICS • DNIPRO
             </span>
             <h1 className={`${styles.heroTitle} text-glow`}>
-              {isUk ? "Сучасні натяжні стелі в Дніпрі" : "Современные натяжные потолки в Днепре"}
-            </h1>
+                {getDniproSeo("home", locale, "dnipro")?.h1 ?? (isUk ? "Сучасні натяжні стелі в Дніпрі" : "Современные натяжные потолки в Днепре")}
+              </h1>
             <p className={styles.heroText}>
               {isUk
                 ? "Професійний монтаж без пилу за 3 години. Ідеально рівна поверхня з гарантією 10 років."

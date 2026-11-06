@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { generatePageMetadata, SchemaScript } from "@/seo";
 import { Badge, Card } from "@/components/ui";
@@ -28,8 +29,8 @@ export function AboutPageTemplate({ locale }: AboutProps) {
           <div className={styles.header}>
             <Badge variant="gold">{isUk ? "Про компанію" : "О компании"}</Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? "Золотий Стандарт Натяжних Стель" : "Золотой Стандарт Натяжных Потолков"}
-            </h1>
+                {getDniproSeo("about", locale, "dnipro")?.h1 ?? (isUk ? "Золотий Стандарт Натяжних Стель" : "Золотой Стандарт Натяжных Потолков")}
+              </h1>
             <p className={styles.subtitle}>
               {isUk
                 ? "NOVA STELYA встановлює стелі преміум-якості з 2016 року. Наша мета — бездоганний результат."
