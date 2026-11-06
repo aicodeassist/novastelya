@@ -3,7 +3,7 @@ import type { Locale } from "@/config/locales.config";
 
 export const CITY_PHRASES: Record<string, Record<Locale, string>> = {
   kyiv:          { uk: "у Києві",       ru: "в Киеве" },
-  dnipro:        { uk: "у Дніпрі",      ru: "в Днепре" },
+  dnipro:        { uk: "в Дніпрі",      ru: "в Днепре" },
   kharkiv:       { uk: "у Харкові",     ru: "в Харькове" },
   lviv:          { uk: "у Львові",      ru: "во Львове" },
   odesa:         { uk: "в Одесі",       ru: "в Одессе" },

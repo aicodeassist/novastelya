@@ -86,7 +86,7 @@ export function HomeTemplate({ locale }: HomeProps) {
         <div className={styles.heroBg}>
           <img
             src="/hero.webp"
-            alt={isUk ? "Сучасні натяжні стелі у Дніпрі" : "Современные натяжные потолки в Днепре"}
+            alt={isUk ? "Сучасні натяжні стелі в Дніпрі" : "Современные натяжные потолки в Днепре"}
             className={styles.heroImg}
             loading="eager"
           />
@@ -98,7 +98,7 @@ export function HomeTemplate({ locale }: HomeProps) {
               ENGINEERING & AESTHETICS • DNIPRO
             </span>
             <h1 className={`${styles.heroTitle} text-glow`}>
-              {isUk ? "Сучасні натяжні стелі у Дніпрі" : "Современные натяжные потолки в Днепре"}
+              {isUk ? "Сучасні натяжні стелі в Дніпрі" : "Современные натяжные потолки в Днепре"}
             </h1>
             <p className={styles.heroText}>
               {isUk

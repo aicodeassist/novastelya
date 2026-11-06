@@ -1,6 +1,7 @@
 import type { CityConfig } from "@/config/geo-matrix";
 import type { Locale } from "@/config/locales.config";
 import type { FAQItem } from "@/seo/types/schema.types";
+import { getCityPhrase } from "@/seo/content/city-copy";
 
 export function getServiceFAQ(
   serviceName: string,
@@ -12,14 +13,8 @@ export function getServiceFAQ(
   const finalPrice = city ? Math.round(basePrice * city.priceModifier) : basePrice;
   const phone = city?.phone ?? "0 800 000-000";
   
-  const cityInCity = city 
-    ? (city[locale] === "Київ" ? (isUk ? "у Києві" : "в Киеве")
-      : city[locale] === "Дніпро" ? (isUk ? "у Дніпрі" : "в Днепре")
-      : city[locale] === "Харків" ? (isUk ? "у Харкові" : "в Харькове")
-      : city[locale] === "Львів" ? (isUk ? "у Львові" : "во Львове")
-      : city[locale] === "Одеса" || city[locale] === "Одесса" ? (isUk ? "в Одесі" : "в Одессе")
-      : city[locale] === "Запоріжжя" || city[locale] === "Запорожье" ? (isUk ? "у Запоріжжі" : "в Запорожье")
-      : `у ${city[locale]}`)
+  const cityInCity = city
+    ? getCityPhrase(city.slug, locale) || (isUk ? `у ${city.uk}` : `в ${city.ru}`)
     : (isUk ? "в Україні" : "в Украине");
 
   return [
