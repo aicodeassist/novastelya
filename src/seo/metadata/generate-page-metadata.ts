@@ -7,6 +7,7 @@ import { buildHreflangAlternates } from "@/seo/alternates/build-hreflang";
 import { buildOpenGraph, buildTwitterCard } from "./core";
 import { getMetadataTemplate } from "./templates";
 import { SITE_URL } from "@/seo/constants/site";
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import fs from "fs";
 import path from "path";
 
@@ -71,8 +72,9 @@ export async function generatePageMetadata({
   const nationalOverrideKey = `${locale}-national-${page}`;
   const pageOverride = allOverrides[cityOverrideKey] || allOverrides[nationalOverrideKey];
   
-  const title = pageOverride?.title || template.title;
-  const description = pageOverride?.description || template.description;
+  const baseline = getDniproSeo(page, locale, resolvedCity?.slug, slug);
+  const title = baseline?.title ?? pageOverride?.title ?? template.title;
+  const description = baseline?.description ?? pageOverride?.description ?? template.description;
 
   const canonical = buildCanonicalUrl(page, locale, resolvedCity?.slug, slug);
   const alternates = buildHreflangAlternates(page, resolvedCity?.slug, slug);
