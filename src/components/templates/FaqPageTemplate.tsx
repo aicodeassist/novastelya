@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { Metadata } from "next";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
@@ -88,8 +89,8 @@ export async function FaqPageTemplate({ cityConfig, locale: propLocale, params }
               {city ? `${cityName} • FAQ` : "FAQ"}
             </Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? `Часті Запитання про Натяжні Стелі${citySuffix}` : `Частые Вопросы о Натяжных Потолках${citySuffix}`}
-            </h1>
+                {getDniproSeo("faq", locale, city?.slug ?? "dnipro")?.h1 ?? (isUk ? `Часті Запитання про Натяжні Стелі${citySuffix}` : `Частые Вопросы о Натяжных Потолках${citySuffix}`)}
+              </h1>
             <p className={styles.subtitle}>
               {isUk
                 ? "Знайдіть відповіді на найпопулярніші запитання про вибір, монтаж та догляд за натяжними стелями."

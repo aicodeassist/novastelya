@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { Metadata } from "next";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
@@ -80,8 +81,8 @@ export async function PricesPageTemplate({ cityConfig, locale: propLocale, param
               {city ? `${cityName} • ${isUk ? "Локальний прайс" : "Локальный прайс"}` : (isUk ? "Вся Україна" : "Вся Украина")}
             </Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? `Ціни на Натяжні Стелі${citySuffix}` : `Цены на Натяжные Потолки${citySuffix}`}
-            </h1>
+                {getDniproSeo("prices", locale, city?.slug ?? "dnipro")?.h1 ?? (isUk ? `Ціни на Натяжні Стелі${citySuffix}` : `Цены на Натяжные Потолки${citySuffix}`)}
+              </h1>
             <p className={styles.subtitle}>
               {isUk 
                 ? "Актуальна вартість матеріалів та монтажних робіт за 1 м². Безкоштовний виїзд замірника."

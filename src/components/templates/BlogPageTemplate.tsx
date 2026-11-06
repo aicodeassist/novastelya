@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import Link from "next/link";
 import { SchemaScript } from "@/seo";
@@ -41,8 +42,8 @@ export function BlogPageTemplate({ locale }: BlogProps) {
           <div className={styles.header}>
             <Badge variant="gold">{isUk ? "Наш Блог" : "Наш Блог"}</Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? "Корисні Статті та Поради" : "Полезные Статьи и Советы"}
-            </h1>
+                {getDniproSeo("blog", locale, "dnipro")?.h1 ?? (isUk ? "Корисні Статті та Поради" : "Полезные Статьи и Советы")}
+              </h1>
             <p className={styles.subtitle}>
               {isUk
                 ? "Дізнайтеся більше про сучасні тенденції в дизайні натяжних стель, тонкощі вибору та особливості монтажу."

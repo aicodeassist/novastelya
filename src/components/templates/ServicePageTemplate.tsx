@@ -3,6 +3,7 @@ import { Metadata } from "next";
 import { generatePageMetadata, SchemaScript, buildServiceSchema, buildFAQSchema, buildBreadcrumbSchema, buildPath } from "@/seo";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
 import { getServiceBySlug, ServiceSlug } from "@/config/services.config";
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import { Button, Card, Badge } from "@/components/ui";
 import styles from "./ServicePageTemplate.module.css";
 import Link from "next/link";
@@ -159,7 +160,8 @@ export async function ServicePageTemplate({ serviceSlug, cityConfig, locale: pro
   const serviceName = service[locale].title;
   const basePrice = service.basePrice;
   const finalPrice = city ? Math.round(basePrice * city.priceModifier) : basePrice;
-  const finalH1 = formatH1(service[locale].h1, city, locale, cityInCity);
+  const finalH1 = getDniproSeo(serviceSlug, locale, city?.slug ?? "dnipro")?.h1
+    ?? formatH1(service[locale].h1, city, locale, cityInCity);
 
   // 1. Build Schemas
   const serviceSchema = buildServiceSchema({ service, city, locale });

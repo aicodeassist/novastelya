@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { Metadata } from "next";
 import { getCityBySlug, CityConfig } from "@/config/geo-matrix";
@@ -129,8 +130,8 @@ export async function PortfolioPageTemplate({ cityConfig, locale: propLocale, pa
               {city ? `${cityName} • ${isUk ? "Наші роботи" : "Наши работы"}` : (isUk ? "Всі роботи" : "Все работы")}
             </Badge>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? `Портфоліо Натяжних Стель${citySuffix}` : `Портфолио Натяжных Потолков${citySuffix}`}
-            </h1>
+                {getDniproSeo("portfolio", locale, city?.slug ?? "dnipro")?.h1 ?? (isUk ? `Портфоліо Натяжних Стель${citySuffix}` : `Портфолио Натяжных Потолков${citySuffix}`)}
+              </h1>
             <p className={styles.subtitle}>
               {isUk
                 ? "Фотографії наших реальних об'єктів з деталями матеріалів, площі та вартості робіт."

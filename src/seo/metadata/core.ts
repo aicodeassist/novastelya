@@ -2,11 +2,11 @@ import { SEO_DEFAULTS, SITE } from "@/seo/constants";
 
 export function buildTitle(title: string): string {
   const full = `${title} | ${SITE.name}`;
-  return full.length > 60 ? title.substring(0, 57) + "..." : full;
+  return full;
 }
 
 export function buildDescription(desc: string): string {
-  return desc.length > 155 ? desc.substring(0, 152) + "..." : desc;
+  return desc;
 }
 
 export function buildOpenGraph({

@@ -1,3 +1,4 @@
+import { getDniproSeo } from "@/seo/content/dnipro-seo";
 import React from "react";
 import { Metadata } from "next";
 import { Calculator } from "@/components/sections/Calculator/Calculator";
@@ -86,8 +87,8 @@ export async function CalculatorPageTemplate({ cityConfig, locale: propLocale, p
           {/* Header */}
           <header className={styles.header}>
             <h1 className={`${styles.title} text-glow`}>
-              {isUk ? `Калькулятор Натяжних Стель${citySuffix}` : `Калькулятор Натяжных Потолков${citySuffix}`}
-            </h1>
+                {getDniproSeo("calculator", locale, city?.slug ?? "dnipro")?.h1 ?? (isUk ? `Калькулятор Натяжних Стель${citySuffix}` : `Калькулятор Натяжных Потолков${citySuffix}`)}
+              </h1>
             <p className={styles.subtitle}>
               {isUk
                 ? "Дайте відповіді на 7 простих запитань та отримайте детальний кошторис вашої майбутньої стелі з точністю до 99%."
