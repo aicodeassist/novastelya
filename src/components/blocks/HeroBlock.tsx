@@ -24,7 +24,8 @@ export function HeroBlock({ block, locale, city, defaultH1, defaultDesc, finalPr
   const isUk = locale === "uk";
   const content = block[locale] || {};
 
-  const titleTemplate = content.title || defaultH1;
+  // Dnipro pages use the canonical page H1, including CMS-backed Hero blocks.
+  const titleTemplate = !city || city.slug === "dnipro" ? defaultH1 : (content.title || defaultH1);
   const subtitleTemplate = content.subtitle || defaultDesc;
   const btnText = content.btnText || (isUk ? "Замовити замір" : "Заказать замер");
   const heroImage = content.heroImage || block.heroImage || "https://image.qwenlm.ai/public_source/3ceeaece-e030-47a5-8a9e-6e479ba5316d/1a0dfdf59-275e-4ba3-96ed-7874d667e36b.png";
@@ -44,7 +45,7 @@ export function HeroBlock({ block, locale, city, defaultH1, defaultDesc, finalPr
       <div className="c-hero__container container">
         <div className={`${styles.heroContent} c-hero__content`}>
           <span className={`${styles.heroBadge} c-hero__badge`}>
-            ENGINEERING & AESTHETICS • {city ? city.slug.toUpperCase() : "KYIV"}
+            ENGINEERING & AESTHETICS • {city ? city.slug.toUpperCase() : "DNIPRO"}
           </span>
           <h1 className={`${styles.title} c-hero__title text-glow`}>
             {title}

@@ -1,5 +1,5 @@
 import React from "react";
-import { CityConfig } from "@/config/geo-matrix";
+import { CityConfig, getCityBySlug } from "@/config/geo-matrix";
 import { getCityPhrase } from "@/seo/content/city-copy";
 import { SITE_NAME } from "@/seo/constants/site";
 
@@ -16,9 +16,11 @@ import { RichTextBlock } from "./RichTextBlock";
 export function replacePlaceholders(text: string, locale: "uk" | "ru", city: CityConfig | null): string {
   if (!text) return "";
   const isUk = locale === "uk";
-  let cityText = city ? (isUk ? city.uk : city.ru) : (isUk ? "в Україні" : "в Украине");
-  let cityPhraseText = city ? getCityPhrase(city.slug, locale) : (isUk ? "в Україні" : "в Украине");
-  let cityPhoneText = city ? city.phone : "0 800 000-000";
+  // A prefix-less service route belongs to Dnipro, not to all of Ukraine.
+  const effectiveCity = city ?? getCityBySlug("dnipro");
+  const cityText = effectiveCity ? effectiveCity[locale] : "";
+  const cityPhraseText = effectiveCity ? getCityPhrase(effectiveCity.slug, locale) : "";
+  const cityPhoneText = effectiveCity?.phone ?? "";
 
   return text
     .replace(/{city}/g, cityText)
